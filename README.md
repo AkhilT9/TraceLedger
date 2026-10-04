@@ -134,8 +134,8 @@ The data generator was improved (more realistic spending amounts and time-ordere
 
 | Piece | Snowflake feature | Object |
 |---|---|---|
-| Read the policy PDFs page by page | `AI_PARSE_DOCUMENT` (LAYOUT mode) | `DOCS.POLICY_PAGES` |
-| Clause-level chunks that keep doc, version, section, clause and page | `SPLIT_TEXT_RECURSIVE_CHARACTER` | `DOCS.POLICY_CHUNKS` |
+| Load the policy text paragraph by paragraph (`AI_PARSE_DOCUMENT` on paid accounts; it's not available on trial accounts) | Stage + file format | `DOCS.POLICY_LINES` |
+| Clause-level chunks that keep doc, version, section and clause | SQL | `DOCS.POLICY_CHUNKS` |
 | Tag analyst notes (e.g. "Evasive or no source of funds") and score sentiment | `AI_CLASSIFY`, `SENTIMENT` | `DOCS.ANALYST_NOTES_ENRICHED` |
 | Categorise news (laundering, fraud, tax, corruption, sanctions, positive) | `AI_CLASSIFY`, `SENTIMENT` | `DOCS.ADVERSE_MEDIA_ENRICHED` |
 | Semantic search with citations | Cortex Search | `APP.POLICY_SEARCH`, `APP.NOTES_SEARCH`, `APP.MEDIA_SEARCH` |
@@ -150,6 +150,7 @@ The data generator was improved (more realistic spending amounts and time-ordere
 ### How to run Layer 3
 
 Run each file with **Run All**, in this order:
+0. Upload the 3 `.md` files from `docs/policies/` to `DOCS → Stages → POLICY_STAGE`, next to the PDFs.
 1. `09_docs_ai_search.sql`: takes about 2–4 minutes because the AI functions run once per page, note and article. The last result is a cited answer about structuring.
 2. `10_semantic_view.sql`: the last result shows alert counts by rule, read through the semantic view.
 3. `11_agent.sql`: the last result shows which tools the agent used, and its answer about ACC-1042.

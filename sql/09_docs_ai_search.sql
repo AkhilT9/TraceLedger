@@ -1,8 +1,8 @@
 -- =============================================================================
 -- TraceLedger | Layer 3 | 09_docs_ai_search.sql
 -- Unstructured data -> AI -> search:
---   1. AI_PARSE_DOCUMENT reads the policy PDFs page by page
---   2. Pages are split into clause-level chunks that keep doc / section / clause / page
+--   1. Policy text is loaded paragraph by paragraph (AI_PARSE_DOCUMENT on paid accounts)
+--   2. Paragraphs become clause-level chunks that keep doc / version / section / clause
 --   3. Cortex AI tags analyst notes and adverse media (sentiment + AI_CLASSIFY)
 --   4. Three Cortex Search services: policies, analyst notes, adverse media
 -- Takes ~2-4 minutes (the AI functions run once per document / note / article).
@@ -30,91 +30,85 @@ INSERT INTO DOC_REGISTRY VALUES
  ('TL-RSK-NOTE-003', 'Basel III, Credit Risk and Liquidity Note',       '1.3', '2026-01-10', 'Chief Risk Officer');
 
 -- -----------------------------------------------------------------------------
--- 1. Parse every PDF on the stage, one row per page
+-- 1. Load the policy text, one row per paragraph
+--    The PDFs are rendered from the Markdown files in docs/policies/, so the
+--    Markdown is uploaded to the same stage and read line by line (each line is
+--    one clause). On a paid account the PDFs can be parsed directly instead -
+--    see the optional AI_PARSE_DOCUMENT block below.
 -- -----------------------------------------------------------------------------
+CREATE OR REPLACE FILE FORMAT TEXT_LINES
+  TYPE = CSV
+  FIELD_DELIMITER = NONE
+  RECORD_DELIMITER = '\n'
+  SKIP_BLANK_LINES = TRUE
+  TRIM_SPACE = TRUE
+  ENCODING = 'UTF8';
+
 ALTER STAGE POLICY_STAGE REFRESH;
 
+CREATE OR REPLACE TABLE POLICY_LINES AS
+SELECT METADATA$FILENAME                               AS FILE_NAME,
+       SPLIT_PART(METADATA$FILENAME, '_', 1)           AS DOC_ID,
+       METADATA$FILE_ROW_NUMBER                        AS LINE_NO,
+       $1::STRING                                      AS LINE_TEXT
+FROM @TRACELEDGER.DOCS.POLICY_STAGE (FILE_FORMAT => 'TRACELEDGER.DOCS.TEXT_LINES', PATTERN => '.*[.]md');
+
+SELECT DOC_ID, COUNT(*) AS PARAGRAPHS, SUM(LENGTH(LINE_TEXT)) AS CHARS FROM POLICY_LINES GROUP BY DOC_ID ORDER BY DOC_ID;
+
+/* Optional, paid accounts only (AI_PARSE_DOCUMENT is not available on trial accounts):
 CREATE OR REPLACE TABLE POLICY_PAGES AS
 WITH parsed AS (
   SELECT RELATIVE_PATH AS FILE_NAME,
-         AI_PARSE_DOCUMENT(
-           TO_FILE('@TRACELEDGER.DOCS.POLICY_STAGE', RELATIVE_PATH),
-           {'mode': 'LAYOUT', 'page_split': true}
-         ) AS PARSED
+         AI_PARSE_DOCUMENT(TO_FILE('@TRACELEDGER.DOCS.POLICY_STAGE', RELATIVE_PATH),
+                           {'mode': 'LAYOUT', 'page_split': true}) AS PARSED
   FROM DIRECTORY(@TRACELEDGER.DOCS.POLICY_STAGE)
   WHERE RELATIVE_PATH ILIKE '%.pdf'
 )
-SELECT FILE_NAME,
-       SPLIT_PART(FILE_NAME, '_', 1)       AS DOC_ID,
-       pg.value:index::INT + 1             AS PAGE_NO,
-       pg.value:content::STRING            AS PAGE_TEXT
+SELECT FILE_NAME, SPLIT_PART(FILE_NAME, '_', 1) AS DOC_ID,
+       pg.value:index::INT + 1 AS PAGE_NO, pg.value:content::STRING AS PAGE_TEXT
 FROM parsed, LATERAL FLATTEN(input => parsed.PARSED:pages) pg;
-
-SELECT DOC_ID, COUNT(*) AS PAGES, SUM(LENGTH(PAGE_TEXT)) AS CHARS FROM POLICY_PAGES GROUP BY DOC_ID ORDER BY DOC_ID;
+*/
 
 -- -----------------------------------------------------------------------------
--- 2. Clause-level chunks with section / clause / page for citations
+-- 2. Clause-level chunks with document / version / section / clause for citations
 -- -----------------------------------------------------------------------------
 CREATE OR REPLACE TABLE POLICY_CHUNKS AS
-WITH paras AS (
-  -- one paragraph per clause in these documents
-  SELECT p.DOC_ID, p.FILE_NAME, p.PAGE_NO, s.INDEX AS PARA_NO, TRIM(s.VALUE) AS PARA
-  FROM POLICY_PAGES p, LATERAL SPLIT_TO_TABLE(p.PAGE_TEXT, '\n\n') s
-  WHERE TRIM(s.VALUE) <> ''
-),
-pieces AS (
-  -- long paragraphs (or pages without blank lines) are split further
-  SELECT pa.DOC_ID, pa.FILE_NAME, pa.PAGE_NO, pa.PARA_NO, c.INDEX AS SUB_NO, TRIM(c.VALUE::STRING) AS PIECE
-  FROM paras pa,
-       LATERAL FLATTEN(input => SNOWFLAKE.CORTEX.SPLIT_TEXT_RECURSIVE_CHARACTER(pa.PARA, 'markdown', 900, 0)) c
-),
-tagged AS (
-  SELECT pieces.*,
+WITH tagged AS (
+  SELECT l.*,
          -- "## 4. Transaction Monitoring and Red Flags" -> section 4
-         REGEXP_SUBSTR(PIECE, '^#*\\s*([0-9]+)\\.\\s+[A-Z]', 1, 1, 'e', 1)                AS HEAD_NO,
-         REGEXP_SUBSTR(PIECE, '^#*\\s*[0-9]+\\.\\s+([^\\n]+)', 1, 1, 'e', 1)              AS HEAD_TITLE,
-         -- "4.2 Structuring (Rule ID: TM-STR). ..." -> clause 4.2 (first clause starting a line)
-         REGEXP_SUBSTR(PIECE, '(^|\\n)[*# ]*([0-9]+\\.[0-9]+)\\s', 1, 1, 'em', 2)     AS CLAUSE_START
-  FROM pieces
+         REGEXP_SUBSTR(LINE_TEXT, '^#+\\s*([0-9]+)\\.\\s', 1, 1, 'e', 1)        AS HEAD_NO,
+         REGEXP_SUBSTR(LINE_TEXT, '^#+\\s*[0-9]+\\.\\s+(.+)$', 1, 1, 'e', 1)    AS HEAD_TITLE,
+         -- "4.2 Structuring (Rule ID: TM-STR). ..." -> clause 4.2
+         REGEXP_SUBSTR(LINE_TEXT, '^([0-9]+\\.[0-9]+)\\s', 1, 1, 'e', 1)        AS CLAUSE_NO
+  FROM POLICY_LINES l
 ),
 ctx AS (
   SELECT tagged.*,
-         LAST_VALUE(HEAD_NO IGNORE NULLS) OVER (PARTITION BY DOC_ID ORDER BY PAGE_NO, PARA_NO, SUB_NO
-           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)                            AS SECTION_NO,
-         LAST_VALUE(HEAD_TITLE IGNORE NULLS) OVER (PARTITION BY DOC_ID ORDER BY PAGE_NO, PARA_NO, SUB_NO
-           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)                            AS SECTION_TITLE,
-         LAST_VALUE(CLAUSE_START IGNORE NULLS) OVER (PARTITION BY DOC_ID ORDER BY PAGE_NO, PARA_NO, SUB_NO
-           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)                            AS LAST_CLAUSE
+         LAST_VALUE(HEAD_NO IGNORE NULLS) OVER (PARTITION BY DOC_ID ORDER BY LINE_NO
+           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)                     AS SECTION_NO,
+         LAST_VALUE(HEAD_TITLE IGNORE NULLS) OVER (PARTITION BY DOC_ID ORDER BY LINE_NO
+           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)                     AS SECTION_TITLE
   FROM tagged
-),
-final AS (
-  SELECT ctx.*,
-         -- a clause applies until the next clause or section starts
-         IFF(LAST_CLAUSE IS NOT NULL AND SPLIT_PART(LAST_CLAUSE, '.', 1) = SECTION_NO, LAST_CLAUSE, NULL) AS CLAUSE_NO
-  FROM ctx
 )
-SELECT f.DOC_ID || '-P' || f.PAGE_NO || '-' || LPAD(f.PARA_NO, 3, '0') || '-' || f.SUB_NO   AS CHUNK_ID,
-       f.DOC_ID,
+SELECT c.DOC_ID || '-' || COALESCE(c.CLAUSE_NO, 'L' || LPAD(c.LINE_NO, 3, '0'))  AS CHUNK_ID,
+       c.DOC_ID,
        r.DOC_TITLE,
        r.DOC_VERSION,
-       f.FILE_NAME,
-       f.PAGE_NO,
-       f.SECTION_NO,
-       f.SECTION_TITLE,
-       f.CLAUSE_NO,
-       f.DOC_ID || ' v' || r.DOC_VERSION
-         || COALESCE(' section ' || COALESCE(f.CLAUSE_NO, f.SECTION_NO), '')
-         || ', page ' || f.PAGE_NO                                                       AS CITATION,
-       r.DOC_TITLE || ' | ' || COALESCE('Section ' || f.SECTION_NO || ' ' || f.SECTION_TITLE || ' | ', '')
-         || f.PIECE                                                                      AS CHUNK_TEXT
-FROM final f
-JOIN DOC_REGISTRY r ON r.DOC_ID = f.DOC_ID
-WHERE NOT (f.HEAD_NO IS NOT NULL AND LENGTH(f.PIECE) < 120)   -- a bare heading is context, not a chunk
-  AND LENGTH(f.PIECE) > 40
-  AND NOT REGEXP_LIKE(f.PIECE, '^(TraceLedger Bank \\||Page [0-9]+).*', 's');
+       REPLACE(c.FILE_NAME, '.md', '.pdf')                                       AS SOURCE_PDF,
+       c.SECTION_NO,
+       c.SECTION_TITLE,
+       c.CLAUSE_NO,
+       c.DOC_ID || ' v' || r.DOC_VERSION
+         || COALESCE(' section ' || COALESCE(c.CLAUSE_NO, c.SECTION_NO), '')     AS CITATION,
+       r.DOC_TITLE || ' | ' || COALESCE('Section ' || c.SECTION_NO || ' ' || c.SECTION_TITLE || ' | ', '')
+         || c.LINE_TEXT                                                          AS CHUNK_TEXT
+FROM ctx c
+JOIN DOC_REGISTRY r ON r.DOC_ID = c.DOC_ID
+WHERE NOT STARTSWITH(c.LINE_TEXT, '#')          -- headings are context, not chunks
+  AND LENGTH(c.LINE_TEXT) > 40;
 
 SELECT DOC_ID, COUNT(*) AS CHUNKS, COUNT(CLAUSE_NO) AS WITH_CLAUSE FROM POLICY_CHUNKS GROUP BY DOC_ID ORDER BY DOC_ID;
-SELECT CITATION, LEFT(CHUNK_TEXT, 160) AS PREVIEW FROM POLICY_CHUNKS WHERE CLAUSE_NO = '4.2';
+SELECT CITATION, LEFT(CHUNK_TEXT, 160) AS PREVIEW FROM POLICY_CHUNKS WHERE DOC_ID = 'TL-AML-POL-001' AND CLAUSE_NO = '4.2';
 
 -- -----------------------------------------------------------------------------
 -- 3. AI enrichment of analyst notes and adverse media
@@ -179,7 +173,7 @@ CREATE OR REPLACE CORTEX SEARCH SERVICE POLICY_SEARCH
   TARGET_LAG = '1 day'
   COMMENT = 'AML policy, regulatory guidance and Basel/liquidity note, chunked by clause'
   AS (
-    SELECT CHUNK_ID, DOC_ID, DOC_TITLE, DOC_VERSION, SECTION_NO, SECTION_TITLE, CLAUSE_NO, PAGE_NO,
+    SELECT CHUNK_ID, DOC_ID, DOC_TITLE, DOC_VERSION, SOURCE_PDF, SECTION_NO, SECTION_TITLE, CLAUSE_NO,
            CITATION, CHUNK_TEXT
     FROM TRACELEDGER.DOCS.POLICY_CHUNKS
   );
