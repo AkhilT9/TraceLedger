@@ -14,9 +14,9 @@ A compliance analyst asks *"Why was ACC-1042 flagged, and does it need an STR?"*
 |---|---|
 | 1. Data foundation (synthetic data, policy docs, tables, load) | ✅ done |
 | 2. Signal engine (rules, sanctions fuzzy match, network, risk score) | ✅ done |
-| 3. Intelligence (semantic view, Cortex Search, Agent) | 🔄 built, being verified |
-| 4. Streamlit app | ⏳ next |
-| 5. Governance (roles, masking, row access, audit) | ⏳ |
+| 3. Intelligence (semantic view, Cortex Search, Agent) | ✅ done |
+| 4. Streamlit app | ✅ built |
+| 5. Governance (roles, masking, row access, audit) | ⏳ next |
 | 6. Polish (eval set, demo) | ⏳ |
 
 ## Repository layout
@@ -40,6 +40,8 @@ sql/08_live_alert_demo.sql     insert suspicious transactions live and watch the
 sql/09_docs_ai_search.sql      AI_PARSE_DOCUMENT -> clause chunks, AI tagging of notes/news, 3 Cortex Search services
 sql/10_semantic_view.sql       TRACELEDGER_SV semantic view for Cortex Analyst
 sql/11_agent.sql               TRACELEDGER_COPILOT Cortex Agent (Analyst + 3 Search tools, citation guardrails)
+sql/12_app_setup.sql           cases, case history, findings (reports) and audit-log tables
+app/streamlit_app.py           Streamlit in Snowflake app (7 pages)
 ```
 
 ## Quick start (one click)
@@ -162,3 +164,22 @@ Run each file with **Run All**, in this order:
 2. `10_semantic_view.sql`: the last result shows alert counts by rule, read through the semantic view.
 3. `11_agent.sql`: the last result shows which tools the agent used, and its answer about ACC-1042.
 4. Chat with it: in Snowsight, go to **AI & ML → Snowflake Intelligence** and pick **TRACELEDGER_COPILOT**.
+
+## Layer 4 – Streamlit in Snowflake app
+
+| Page | What it does |
+|---|---|
+| **Command Center** | KPIs (alerts, high-risk customers, open cases, STRs pending/filed, value flagged), alerts by rule and typology, the flagged-customer table with the score explanation, and the latest alerts |
+| **Customer 360** | Profile, explainable score, every alert with its evidence transactions and policy clause, transaction timeline, **money-flow network graph**, sanctions and counterparty screening, adverse media with AI category, AI-tagged analyst notes, accounts and loans |
+| **Investigation Copilot** | Chat with the Cortex Agent. Each answer shows the tools used, the **generated SQL**, the result tables, the retrieved documents and the IDs cited |
+| **Case Management** | Alerts become a case, then OPEN → UNDER_REVIEW → ESCALATED → STR_FILED / CLOSED. Includes assignment, notes and history |
+| **Report Generator** | **STR draft** and **closure memo** written by Cortex AI from the case evidence and policy clauses. A **citation guardrail** blocks saving if the draft cites an ID that isn't in the evidence. Maker-checker approval, CTR report (CSV) and a regulatory summary |
+| **What-If Simulator** | Re-tune the structuring rule and see how many alerts it would raise; the Compliance Head can apply the change to production. Also an LCR-style stress test if the top depositors withdraw |
+| **Audit Trail** | Every question, SQL statement, source, report version, approval and status change, exportable as CSV |
+
+The sidebar **"Acting as"** switch selects the persona: Analyst (maker), Compliance Head (checker) or Auditor (read-only). Layer 5 links it to Snowflake masking and row-access policies.
+
+### How to run Layer 4
+1. **Run All** on `sql/12_app_setup.sql`.
+2. In Snowsight, go to **Projects → Streamlit → + Streamlit App**. Name it `TRACELEDGER_APP`, set the location to `TRACELEDGER` / `APP` and the warehouse to `TRACELEDGER_WH`, then click **Create**.
+3. Replace the sample code with `app/streamlit_app.py` and click **Run**. If the editor has a **Packages** menu, pick the newest Streamlit version.
