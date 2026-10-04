@@ -27,6 +27,7 @@ data_gen/build_policy_pdfs.py  renders policy markdown -> PDF (needs reportlab)
 data/*.csv                     generated data, ready to upload
 docs/policies/*.md             AML policy, regulatory guidance, Basel/liquidity note
 docs/policies/pdf/*.pdf        the same documents as PDFs, for AI_PARSE_DOCUMENT
+sql/bootstrap.sql              one-click setup straight from GitHub (Git integration)
 sql/00_setup.sql               warehouse, database, schemas, stages
 sql/01_tables.sql              table DDL
 sql/02_load.sql                COPY INTO from stage
@@ -40,6 +41,12 @@ sql/09_docs_ai_search.sql      AI_PARSE_DOCUMENT -> clause chunks, AI tagging of
 sql/10_semantic_view.sql       TRACELEDGER_SV semantic view for Cortex Analyst
 sql/11_agent.sql               TRACELEDGER_COPILOT Cortex Agent (Analyst + 3 Search tools, citation guardrails)
 ```
+
+## Quick start (one click)
+
+1. Use a Snowflake account in a region where Cortex AI runs natively, for example **AWS US West (Oregon)**, Enterprise edition. Trial accounts can't use cross-region AI.
+2. In Snowsight, open a new SQL file, paste [`sql/bootstrap.sql`](sql/bootstrap.sql) and click **Run All**.
+3. The script links Snowflake to this GitHub repo (Git integration), copies the data and policy files into the stages, and runs every layer. It takes about 5–8 minutes.
 
 ## Layer 1 – Data foundation
 

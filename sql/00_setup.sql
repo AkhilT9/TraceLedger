@@ -6,8 +6,9 @@
 
 USE ROLE ACCOUNTADMIN;
 
--- Cortex AI functions are region-bound; this lets them run cross-region if needed.
-ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION = 'ANY_REGION';
+-- Use a region where Cortex AI runs natively (e.g. AWS US West - Oregon). Trial accounts
+-- cannot use cross-region inference. On a paid account in another region, enable it with:
+--   ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION = 'ANY_REGION';
 
 -- Extra-small warehouse that suspends after 60s idle (keeps credit burn tiny).
 CREATE WAREHOUSE IF NOT EXISTS TRACELEDGER_WH
