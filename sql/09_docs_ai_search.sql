@@ -215,7 +215,7 @@ FROM TABLE(FLATTEN(PARSE_JSON(SNOWFLAKE.CORTEX.SEARCH_PREVIEW(
      ))['results'])) r;
 
 SELECT AI_COMPLETE(
-  'mistral-large2',
+  'mistral-large3',
   'You are an AML compliance assistant. Using ONLY the policy extracts below, explain what structuring is, the exact '
   || 'alert threshold, and the deadline for filing an STR. Cite each fact as [citation]. If the extracts do not '
   || 'contain the answer, say "insufficient evidence".' || CHR(10) || CHR(10)
