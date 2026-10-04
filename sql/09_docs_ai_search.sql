@@ -214,14 +214,22 @@ FROM TABLE(FLATTEN(PARSE_JSON(SNOWFLAKE.CORTEX.SEARCH_PREVIEW(
        '{"query": "many cash deposits just under the reporting threshold within a week", "columns": ["CITATION", "CHUNK_TEXT"], "limit": 3}'
      ))['results'])) r;
 
-SELECT AI_COMPLETE(
-  'mistral-large3',
-  'You are an AML compliance assistant. Using ONLY the policy extracts below, explain what structuring is, the exact '
-  || 'alert threshold, and the deadline for filing an STR. Cite each fact as [citation]. If the extracts do not '
-  || 'contain the answer, say "insufficient evidence".' || CHR(10) || CHR(10)
-  || (SELECT LISTAGG('[' || r.value:CITATION::STRING || '] ' || r.value:CHUNK_TEXT::STRING, CHR(10) || CHR(10))
-      FROM TABLE(FLATTEN(PARSE_JSON(SNOWFLAKE.CORTEX.SEARCH_PREVIEW(
-             'TRACELEDGER.APP.POLICY_SEARCH',
-             '{"query": "structuring threshold and STR filing timeline", "columns": ["CITATION", "CHUNK_TEXT"], "limit": 5}'
-           ))['results'])) r)
-) AS CITED_ANSWER;
+-- Cited RAG answer: retrieve clauses first, then ask the LLM to answer only from them.
+-- (If the policy index was created seconds ago, give it a minute before running this.)
+WITH hits AS (
+  SELECT PARSE_JSON(SNOWFLAKE.CORTEX.SEARCH_PREVIEW(
+           'TRACELEDGER.APP.POLICY_SEARCH',
+           '{"query": "structuring threshold and STR filing timeline", "columns": ["CITATION", "CHUNK_TEXT"], "limit": 5}'
+         )) AS J
+),
+context AS (
+  SELECT LISTAGG('[' || r.value:CITATION::STRING || '] ' || r.value:CHUNK_TEXT::STRING, '\n\n') AS CTX
+  FROM hits, LATERAL FLATTEN(input => hits.J:results) r
+)
+SELECT SNOWFLAKE.CORTEX.COMPLETE(
+         'mistral-large3',
+         'You are an AML compliance assistant. Using ONLY the policy extracts below, explain what structuring is, '
+         || 'the exact alert threshold, and the deadline for filing an STR. Cite each fact as [citation]. '
+         || 'If the extracts do not contain the answer, say "insufficient evidence".\n\n' || CTX
+       ) AS CITED_ANSWER
+FROM context;
