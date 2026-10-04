@@ -14,8 +14,8 @@ A compliance analyst asks *"Why was ACC-1042 flagged, and does it need an STR?"*
 |---|---|
 | 1. Data foundation (synthetic data, policy docs, tables, load) | ✅ done |
 | 2. Signal engine (rules, sanctions fuzzy match, network, risk score) | ✅ done |
-| 3. Intelligence (semantic view, Cortex Search, Agent) | ⏳ next |
-| 4. Streamlit app | ⏳ |
+| 3. Intelligence (semantic view, Cortex Search, Agent) | 🔄 built, being verified |
+| 4. Streamlit app | ⏳ next |
 | 5. Governance (roles, masking, row access, audit) | ⏳ |
 | 6. Polish (eval set, demo) | ⏳ |
 
@@ -36,6 +36,9 @@ sql/05_signals_screening.sql   sanctions fuzzy screening, PEP rule, adverse-medi
 sql/06_signals_alerts.sql      ALERTS and RISK_SCORES dynamic tables (auto-refresh ~1 min)
 sql/07_validate_signals.sql    detection rate vs answer key, top risk scores, ACC-1042 explanation
 sql/08_live_alert_demo.sql     insert suspicious transactions live and watch the alert appear
+sql/09_docs_ai_search.sql      AI_PARSE_DOCUMENT -> clause chunks, AI tagging of notes/news, 3 Cortex Search services
+sql/10_semantic_view.sql       TRACELEDGER_SV semantic view for Cortex Analyst
+sql/11_agent.sql               TRACELEDGER_COPILOT Cortex Agent (Analyst + 3 Search tools, citation guardrails)
 ```
 
 ## Layer 1 – Data foundation
@@ -126,3 +129,28 @@ The data generator was improved (more realistic spending amounts and time-ordere
 4. **Run All** on `04_signals_rules.sql`, `05_signals_screening.sql` and `06_signals_alerts.sql`, in that order.
 5. **Run All** on `07_validate_signals.sql` to see the results.
 6. Optional: open `08_live_alert_demo.sql` and run it **one statement at a time** to watch a live alert appear.
+
+## Layer 3 – Intelligence (Cortex AI)
+
+| Piece | Snowflake feature | Object |
+|---|---|---|
+| Read the policy PDFs page by page | `AI_PARSE_DOCUMENT` (LAYOUT mode) | `DOCS.POLICY_PAGES` |
+| Clause-level chunks that keep doc, version, section, clause and page | `SPLIT_TEXT_RECURSIVE_CHARACTER` | `DOCS.POLICY_CHUNKS` |
+| Tag analyst notes (e.g. "Evasive or no source of funds") and score sentiment | `AI_CLASSIFY`, `SENTIMENT` | `DOCS.ANALYST_NOTES_ENRICHED` |
+| Categorise news (laundering, fraud, tax, corruption, sanctions, positive) | `AI_CLASSIFY`, `SENTIMENT` | `DOCS.ADVERSE_MEDIA_ENRICHED` |
+| Semantic search with citations | Cortex Search | `APP.POLICY_SEARCH`, `APP.NOTES_SEARCH`, `APP.MEDIA_SEARCH` |
+| Plain-English questions over the numbers | Semantic View + Cortex Analyst | `APP.TRACELEDGER_SV` (10 tables, 9 joins, 20 metrics, synonyms) |
+| One copilot that routes each question to the right tool | Cortex Agent | `APP.TRACELEDGER_COPILOT` |
+
+**Guardrails in the agent:**
+- Every claim must cite a transaction ID, alert ID, policy clause, note ID or article ID. If it can't, it answers "Insufficient evidence".
+- Filing recommendations are limited to the four options in policy §8.5.
+- Every answer reminds the analyst about maker-checker approval and the tipping-off prohibition.
+
+### How to run Layer 3
+
+Run each file with **Run All**, in this order:
+1. `09_docs_ai_search.sql`: takes about 2–4 minutes because the AI functions run once per page, note and article. The last result is a cited answer about structuring.
+2. `10_semantic_view.sql`: the last result shows alert counts by rule, read through the semantic view.
+3. `11_agent.sql`: the last result shows which tools the agent used, and its answer about ACC-1042.
+4. Chat with it: in Snowsight, go to **AI & ML → Snowflake Intelligence** and pick **TRACELEDGER_COPILOT**.
