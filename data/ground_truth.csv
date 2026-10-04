@@ -1,0 +1,55 @@
+CUSTOMER_ID,ACCOUNT_ID,INJECTED_PATTERN,DETAIL
+CUST-0001,ACC-1042,STRUCTURING,12 cash deposits of INR 9.0L-9.95L in 2 7-day bursts
+CUST-0197,ACC-1258,STRUCTURING,4 cash deposits of INR 9.0L-9.95L in 1 7-day bursts
+CUST-0036,ACC-1045,STRUCTURING,8 cash deposits of INR 9.0L-9.95L in 2 7-day bursts
+CUST-0257,ACC-1334,STRUCTURING,5 cash deposits of INR 9.0L-9.95L in 1 7-day bursts
+CUST-0130,ACC-1167,STRUCTURING,9 cash deposits of INR 9.0L-9.95L in 2 7-day bursts
+CUST-0447,ACC-1572,STRUCTURING,6 cash deposits of INR 9.0L-9.95L in 2 7-day bursts
+CUST-0306,ACC-1392,VELOCITY_SPIKE,64 UPI txns within 3 days starting 2026-07-10
+CUST-0317,ACC-1407,VELOCITY_SPIKE,63 UPI txns within 3 days starting 2026-07-12
+CUST-0231,ACC-1299,VELOCITY_SPIKE,63 UPI txns within 3 days starting 2026-07-26
+CUST-0434,ACC-1557,VELOCITY_SPIKE,55 UPI txns within 3 days starting 2026-06-22
+CUST-0112,ACC-1144,VELOCITY_SPIKE,66 UPI txns within 3 days starting 2026-06-23
+CUST-0230,ACC-1298,DORMANT_REACTIVATION,Dormant since before 2025-10-01; INR 66.9L received from 2026-09-18
+CUST-0053,ACC-1064,DORMANT_REACTIVATION,Dormant since before 2025-10-01; INR 57.5L received from 2026-09-21
+CUST-0297,ACC-1382,DORMANT_REACTIVATION,Dormant since before 2025-10-01; INR 72.1L received from 2026-09-21
+CUST-0052,ACC-1063,DORMANT_REACTIVATION,Dormant since before 2025-10-01; INR 41.7L received from 2026-09-23
+CUST-0201,ACC-1263,DORMANT_REACTIVATION,Dormant since before 2025-10-01; INR 54.3L received from 2026-09-07
+CUST-0416,ACC-1531,HIGH_RISK_GEOGRAPHY,SWIFT round-tripping via high-risk jurisdictions
+CUST-0421,ACC-1539,HIGH_RISK_GEOGRAPHY,SWIFT round-tripping via high-risk jurisdictions
+CUST-0142,ACC-1185,HIGH_RISK_GEOGRAPHY,SWIFT round-tripping via high-risk jurisdictions
+CUST-0334,ACC-1429,HIGH_RISK_GEOGRAPHY,SWIFT round-tripping via high-risk jurisdictions
+CUST-0183,ACC-1238,INCOME_MISMATCH,"Declared income INR 21,000 vs crores credited"
+CUST-0225,ACC-1293,INCOME_MISMATCH,"Declared income INR 138,000 vs crores credited"
+CUST-0145,ACC-1188,INCOME_MISMATCH,"Declared income INR 75,000 vs crores credited"
+CUST-0035,ACC-1044,INCOME_MISMATCH,"Declared income INR 146,000 vs crores credited"
+CUST-0455,ACC-1581,INCOME_MISMATCH,"Declared income INR 101,000 vs crores credited"
+CUST-0276,ACC-1356,ROUND_AMOUNTS,10+ transactions in exact INR lakh multiples
+CUST-0419,ACC-1536,ROUND_AMOUNTS,10+ transactions in exact INR lakh multiples
+CUST-0313,ACC-1399,ROUND_AMOUNTS,10+ transactions in exact INR lakh multiples
+CUST-0311,ACC-1397,ROUND_AMOUNTS,10+ transactions in exact INR lakh multiples
+CUST-0325,ACC-1418,RAPID_IN_OUT,Credits passed through within 48h
+CUST-0301,ACC-1386,RAPID_IN_OUT,Credits passed through within 48h
+CUST-0343,ACC-1438,RAPID_IN_OUT,Credits passed through within 48h
+CUST-0337,ACC-1432,RAPID_IN_OUT,Credits passed through within 48h
+CUST-0154,ACC-1198,MULE_RING,RING-A: cycle ACC-1198 -> ACC-1628 -> ACC-1617 -> ACC-1065 -> ACC-1198
+CUST-0499,ACC-1628,MULE_RING,RING-A: cycle ACC-1198 -> ACC-1628 -> ACC-1617 -> ACC-1065 -> ACC-1198
+CUST-0489,ACC-1617,MULE_RING,RING-A: cycle ACC-1198 -> ACC-1628 -> ACC-1617 -> ACC-1065 -> ACC-1198
+CUST-0054,ACC-1065,MULE_RING,RING-A: cycle ACC-1198 -> ACC-1628 -> ACC-1617 -> ACC-1065 -> ACC-1198
+CUST-0376,ACC-1481,MULE_RING,RING-B: cycle ACC-1481 -> ACC-1369 -> ACC-1515 -> ACC-1603 -> ACC-1041 -> ACC-1481
+CUST-0285,ACC-1369,MULE_RING,RING-B: cycle ACC-1481 -> ACC-1369 -> ACC-1515 -> ACC-1603 -> ACC-1041 -> ACC-1481
+CUST-0402,ACC-1515,MULE_RING,RING-B: cycle ACC-1481 -> ACC-1369 -> ACC-1515 -> ACC-1603 -> ACC-1041 -> ACC-1481
+CUST-0476,ACC-1603,MULE_RING,RING-B: cycle ACC-1481 -> ACC-1369 -> ACC-1515 -> ACC-1603 -> ACC-1041 -> ACC-1481
+CUST-0033,ACC-1041,MULE_RING,RING-B: cycle ACC-1481 -> ACC-1369 -> ACC-1515 -> ACC-1603 -> ACC-1041 -> ACC-1481
+CUST-0493,ACC-1621,FAN_IN_HUB,16 feeder accounts -> hub -> SWIFT to sanctioned entity in AE
+CUST-0002,ACC-1001,SANCTIONS_NEAR_MATCH,Name 'Viktor Petrovv' resembles a watchlist entry
+CUST-0003,ACC-1002,SANCTIONS_NEAR_MATCH,Name 'Hossein Rezai' resembles a watchlist entry
+CUST-0004,ACC-1004,SANCTIONS_NEAR_MATCH,Name 'Dmitry Sokolov' resembles a watchlist entry
+CUST-0005,ACC-1005,SANCTIONS_NEAR_MATCH,Name 'Salim Yusuf Merchant' resembles a watchlist entry
+CUST-0006,ACC-1007,SANCTIONS_NEAR_MATCH,Name 'Chen Wei Guo' resembles a watchlist entry
+CUST-0007,ACC-1009,SANCTIONS_NEAR_MATCH,Name 'Red Sea Logistic FZE' resembles a watchlist entry
+CUST-0008,ACC-1010,PEP,PEP receiving large third-party credits from infra contractors
+CUST-0009,ACC-1011,PEP,PEP receiving large third-party credits from infra contractors
+CUST-0010,ACC-1013,PEP,PEP receiving large third-party credits from infra contractors
+CUST-0209,ACC-1274,FALSE_POSITIVE_CONTROL,Cash-intensive jeweller; volumes consistent with declared turnover and GST filings
+CUST-0426,ACC-1547,FALSE_POSITIVE_CONTROL,Cash-intensive jeweller; volumes consistent with declared turnover and GST filings

@@ -1,0 +1,17 @@
+BRANCH_ID,BRANCH_NAME,CITY,STATE,REGION,HIGH_RISK_AREA
+BR-001,Mumbai Fort,Mumbai,Maharashtra,WEST,False
+BR-002,Mumbai Zaveri Bazaar,Mumbai,Maharashtra,WEST,True
+BR-003,Pune Camp,Pune,Maharashtra,WEST,False
+BR-004,Ahmedabad CG Road,Ahmedabad,Gujarat,WEST,False
+BR-005,Surat Ring Road,Surat,Gujarat,WEST,True
+BR-006,Delhi Connaught Place,New Delhi,Delhi,NORTH,False
+BR-007,Delhi Chandni Chowk,New Delhi,Delhi,NORTH,True
+BR-008,Jaipur MI Road,Jaipur,Rajasthan,NORTH,False
+BR-009,Amritsar Hall Bazaar,Amritsar,Punjab,NORTH,True
+BR-010,Bengaluru MG Road,Bengaluru,Karnataka,SOUTH,False
+BR-011,Hyderabad Banjara Hills,Hyderabad,Telangana,SOUTH,False
+BR-012,Chennai T Nagar,Chennai,Tamil Nadu,SOUTH,False
+BR-013,Kochi Marine Drive,Kochi,Kerala,SOUTH,False
+BR-014,Kolkata Park Street,Kolkata,West Bengal,EAST,False
+BR-015,Kolkata Burrabazar,Kolkata,West Bengal,EAST,True
+BR-016,Guwahati Fancy Bazaar,Guwahati,Assam,EAST,True
