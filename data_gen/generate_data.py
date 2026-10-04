@@ -321,7 +321,7 @@ def normal_activity(acc, cust, start=WINDOW_START, end=AS_OF, intensity=1.0):
                 amt = monthly_in / 10 * rng.uniform(0.5, 1.5)
                 day = rand_date(d, month_end)
                 if cash_heavy and rng.random() < 0.35:
-                    add_txn(acc, rand_ts(day), "CREDIT", min(amt, 450_000), "CASH",
+                    add_txn(acc, rand_ts(day), "CREDIT", min(amt, rng.uniform(380_000, 450_000)), "CASH",
                             desc="Cash deposit - daily sales")
                 else:
                     add_txn(acc, rand_ts(day), "CREDIT", amt, rng.choice(["NEFT", "RTGS", "IMPS"]),
@@ -337,7 +337,7 @@ def normal_activity(acc, cust, start=WINDOW_START, end=AS_OF, intensity=1.0):
             for _ in range(rng.randint(1, 3)):
                 amt = monthly_in / 2 * rng.uniform(0.6, 1.3)
                 ch = "CASH" if cash_heavy and rng.random() < 0.6 else "UPI"
-                add_txn(acc, rand_ts(rand_date(d, month_end)), "CREDIT", min(amt, 200_000), ch,
+                add_txn(acc, rand_ts(rand_date(d, month_end)), "CREDIT", min(amt, rng.uniform(150_000, 200_000)), ch,
                         desc="Cash deposit" if ch == "CASH" else "UPI received")
         # outflows
         n_spend = int(rng.randint(4, 12) * intensity)
@@ -347,7 +347,7 @@ def normal_activity(acc, cust, start=WINDOW_START, end=AS_OF, intensity=1.0):
             cp = rng.choice(MERCHANTS) if ch in ("UPI", "CARD") else ""
             desc = {"UPI": "UPI payment", "CARD": "POS purchase", "NEFT": "Bill / rent payment",
                     "CASH": "ATM withdrawal"}[ch]
-            add_txn(acc, rand_ts(rand_date(d, month_end)), "DEBIT", min(amt, 300_000), ch, cp, desc=desc)
+            add_txn(acc, rand_ts(rand_date(d, month_end)), "DEBIT", min(amt, rng.uniform(220_000, 300_000)), ch, cp, desc=desc)
         # occasional legit foreign remittance
         if rng.random() < 0.03:
             cc = rng.choice(SAFE_FOREIGN_CC)
@@ -469,11 +469,12 @@ def scenario_mule_ring(ring_accounts, ring_custs, label):
         # seed money enters the ring as cash
         add_txn(ring_accounts[0], s - timedelta(hours=3), "CREDIT", amt, "CASH",
                 desc="Cash deposit")
+        hop_ts = s
         for k in range(len(ring_accounts)):
             src, dst = ring_accounts[k], ring_accounts[(k + 1) % len(ring_accounts)]
             amt *= rng.uniform(0.97, 0.995)              # small "commission" skimmed per hop
-            transfer(src, dst, s + timedelta(hours=k * rng.uniform(1, 4)), amt,
-                     rng.choice(["IMPS", "NEFT", "RTGS"]))
+            transfer(src, dst, hop_ts, amt, rng.choice(["IMPS", "NEFT", "RTGS"]))
+            hop_ts += timedelta(hours=rng.uniform(1, 4))  # next hop leaves after this one lands
     for c, a in zip(ring_custs, ring_accounts):
         tag(c["CUSTOMER_ID"], a, "MULE_RING", f"{label}: cycle {' -> '.join(ring_accounts)} -> {ring_accounts[0]}")
 

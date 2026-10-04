@@ -1,6 +1,6 @@
 # TraceLedger Bank – Anti-Money Laundering & Counter-Terrorist Financing Policy
 
-Document ID: TL-AML-POL-001 | Version 4.2 | Effective: 01-April-2026 | Owner: Principal Officer, Compliance
+Document ID: TL-AML-POL-001 | Version 4.3 | Effective: 01-October-2026 | Owner: Principal Officer, Compliance
 
 Classification: Internal. SYNTHETIC DOCUMENT CREATED FOR A HACKATHON DEMO. NOT LEGAL OR REGULATORY ADVICE.
 
@@ -58,7 +58,7 @@ Each clause in this section maps to an automated detection rule. The Rule ID is 
 
 4.7 Round-Amount Transactions (Rule ID: TM-RND). An alert is raised when an account records five (5) or more transactions of INR 1,00,000 or above that are exact multiples of INR 1,00,000 within ninety (90) days, without a documented commercial reason. Round-amount settlements between parties with no visible trade relationship are an indicator of fictitious invoicing.
 
-4.8 Rapid Movement of Funds / Pass-Through (Rule ID: TM-RIO). An alert is raised when a credit of INR 5,00,000 or more is followed by debits totalling at least ninety per cent (90%) of that credit within forty-eight (48) hours. A pass-through account that keeps a near-zero balance while moving large values is characteristic of the layering stage of money laundering.
+4.8 Rapid Movement of Funds / Pass-Through (Rule ID: TM-RIO). An alert is raised when a credit of INR 5,00,000 or more is followed by debits totalling at least ninety per cent (90%) of that credit within forty-eight (48) hours, with at least seventy-five per cent (75%) of the credit leaving in a single onward payment. Routine payments of many small bills after a business receipt are not a pass-through. A pass-through account that keeps a near-zero balance while moving large values is characteristic of the layering stage of money laundering.
 
 4.9 Networks, Mule Rings and Fan-In Hubs (Rule ID: TM-NET). (a) Circular flows: an alert is raised when funds originating from an account return to that same account through two (2) or more intermediary accounts within seven (7) days. (b) Fan-in hub: an alert is raised when ten (10) or more distinct accounts send funds to a single account within seven (7) days and that account transfers out eighty per cent (80%) or more of the receipts, especially cross-border. All accounts in the network must be investigated together as one Case.
 
@@ -68,7 +68,7 @@ Each clause in this section maps to an automated detection rule. The Rule ID is 
 
 5.1 All customers, beneficial owners and counterparties of cross-border transactions are screened against the UN Security Council consolidated list, domestic designations under UAPA, and the internal watchlist at onboarding, on every list update and before release of any SWIFT payment.
 
-5.2 Match thresholds (Rule ID: SCR-SAN). Name similarity is computed with fuzzy matching (Jaro-Winkler and edit distance) against the listed name and all aliases. (a) Similarity of 95 or above, or an exact match on name and date of birth, is a Potential True Match: the account must be frozen and escalated to the Principal Officer within 24 hours. (b) Similarity from 85 to below 95 is a Near Match: Level-2 review within 48 hours. (c) Below 85 is not alerted.
+5.2 Match thresholds (Rule ID: SCR-SAN). Names are normalised (upper case, punctuation removed) and compared with the listed name and all aliases. The match score (0 to 100) is the average of the Jaro-Winkler similarity and the edit-distance similarity, so that names sharing only a common word such as "Logistics" do not match. (a) A score of 95 or above, or a score of 85 or above where the date of birth also matches, is a Potential True Match: the account must be frozen and escalated to the Principal Officer within 24 hours. (b) A score from 85 to below 95 is a Near Match: Level-2 review within 48 hours. (c) Below 85 is not alerted.
 
 5.3 Discounting a match. A Near Match may be closed as a false positive only when at least two independent identifiers (date of birth, nationality, passport or PAN, address) differ from the listed party. The rationale and documents relied upon must be recorded in the Case.
 
@@ -76,9 +76,9 @@ Each clause in this section maps to an automated detection rule. The Rule ID is 
 
 ## 6. Explainable Risk Scoring
 
-6.1 The Bank does not use opaque models to decide suspicion. Each customer receives a transparent risk score equal to the sum of the weights of the rules that fired in the trailing ninety (90) days, capped at 100.
+6.1 The Bank does not use opaque models to decide suspicion. Each customer receives a transparent risk score equal to the sum of the weights of the distinct rules that fired on any of the customer's accounts during the current review period of twelve (12) months, capped at 100. Each rule counts once per customer, however many alerts it raised.
 
-6.2 Rule weights: TM-STR 35; TM-NET 30; SCR-SAN 30 (Near Match) or 50 (Potential True Match); TM-GEO 25; TM-DOR 20; TM-INC 20; TM-RIO 20; TM-VEL 15; TM-RND 10; SCR-PEP 10; adverse media hit 10; KYC risk tier HIGH 10.
+6.2 Rule weights: TM-STR 35; TM-NET 30; SCR-SAN 30 (Near Match) or 50 (Potential True Match); TM-GEO 25; TM-DOR 20; TM-INC 20; TM-RIO 20; TM-VEL 15; TM-RND 10; SCR-PEP 10; ADV-MED (adverse media hit) 10; KYC-HIGH (KYC risk tier HIGH) 10.
 
 6.3 Score bands: 0 to 39 LOW (no action unless analyst judgement requires it); 40 to 69 MEDIUM (Level-1 review within 5 working days); 70 and above HIGH (Level-2 review and Principal Officer visibility within 2 working days).
 

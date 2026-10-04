@@ -1,217 +1,230 @@
 NOTE_ID,CUSTOMER_ID,NOTE_DATE,AUTHOR,NOTE_TYPE,NOTE_TEXT
-NOTE-00001,CUST-0001,2026-06-06,analyst.karan,CALL,"Customer visited branch three times this week with cash bundles, each time asking the teller what amount would 'avoid paperwork'. Declined to provide source of cash."
-NOTE-00002,CUST-0001,2026-07-08,analyst.meera,KYC_REVIEW,Called customer regarding repeated cash deposits just under 10 lakh. Customer became evasive and said the cash belongs to 'relatives in business'. No documents provided.
-NOTE-00003,CUST-0002,2026-09-05,analyst.priya,BRANCH_VISIT,Name screening returned a potential watchlist match. Customer provided passport copy; date of birth differs from listed individual. Pending L2 review.
-NOTE-00004,CUST-0003,2026-08-22,analyst.priya,KYC_REVIEW,Name screening returned a potential watchlist match. Customer provided passport copy; date of birth differs from listed individual. Pending L2 review.
-NOTE-00005,CUST-0004,2026-06-03,analyst.meera,KYC_REVIEW,Name screening returned a potential watchlist match. Customer provided passport copy; date of birth differs from listed individual. Pending L2 review.
-NOTE-00006,CUST-0004,2026-04-23,analyst.meera,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00007,CUST-0005,2026-09-20,analyst.meera,KYC_REVIEW,Name screening returned a potential watchlist match. Customer provided passport copy; date of birth differs from listed individual. Pending L2 review.
-NOTE-00008,CUST-0006,2026-08-19,analyst.rohan,KYC_REVIEW,Name screening returned a potential watchlist match. Customer provided passport copy; date of birth differs from listed individual. Pending L2 review.
-NOTE-00009,CUST-0007,2026-08-11,analyst.priya,CALL,Name screening returned a potential watchlist match. Customer provided passport copy; date of birth differs from listed individual. Pending L2 review.
-NOTE-00010,CUST-0008,2026-08-25,analyst.karan,KYC_REVIEW,PEP customer. Large advisory fees received from infrastructure contractors who bid for municipal tenders. Enhanced due diligence questionnaire sent.
-NOTE-00011,CUST-0008,2026-01-19,analyst.meera,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00012,CUST-0009,2026-07-12,analyst.meera,KYC_REVIEW,PEP customer. Large advisory fees received from infrastructure contractors who bid for municipal tenders. Enhanced due diligence questionnaire sent.
-NOTE-00013,CUST-0009,2026-04-25,analyst.rohan,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00014,CUST-0010,2026-07-06,analyst.rohan,CALL,PEP customer. Large advisory fees received from infrastructure contractors who bid for municipal tenders. Enhanced due diligence questionnaire sent.
-NOTE-00015,CUST-0010,2025-10-06,analyst.meera,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00016,CUST-0011,2025-10-14,analyst.meera,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00017,CUST-0015,2025-10-30,analyst.rohan,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00018,CUST-0020,2026-01-20,analyst.priya,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00019,CUST-0024,2026-07-25,analyst.priya,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00020,CUST-0025,2026-05-04,analyst.rohan,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00021,CUST-0031,2026-09-14,analyst.karan,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00022,CUST-0033,2026-08-24,analyst.rohan,KYC_REVIEW,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
-NOTE-00023,CUST-0034,2026-03-04,analyst.rohan,BRANCH_VISIT,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00024,CUST-0035,2026-06-28,analyst.meera,CALL,Customer profile is student with negligible income but account has received multiple lakhs from unknown individuals. Customer said they are 'helping a friend receive money for a commission'.
-NOTE-00025,CUST-0035,2026-09-05,analyst.meera,KYC_REVIEW,Homemaker account receiving high-value transfers. Spouse called on her behalf and refused to share source of funds.
-NOTE-00026,CUST-0035,2025-12-04,analyst.meera,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00027,CUST-0036,2026-07-27,analyst.rohan,BRANCH_VISIT,"Customer visited branch three times this week with cash bundles, each time asking the teller what amount would 'avoid paperwork'. Declined to provide source of cash."
-NOTE-00028,CUST-0036,2026-09-13,analyst.meera,KYC_REVIEW,Called customer regarding repeated cash deposits just under 10 lakh. Customer became evasive and said the cash belongs to 'relatives in business'. No documents provided.
-NOTE-00029,CUST-0043,2025-10-10,analyst.priya,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00030,CUST-0048,2026-04-16,analyst.karan,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00031,CUST-0052,2026-07-07,analyst.priya,CALL,Account inactive for over a year suddenly received large RTGS credits. Customer could not explain the remitters. Requested updated KYC; pending.
-NOTE-00032,CUST-0052,2025-12-20,analyst.meera,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00033,CUST-0053,2026-09-01,analyst.karan,BRANCH_VISIT,Account inactive for over a year suddenly received large RTGS credits. Customer could not explain the remitters. Requested updated KYC; pending.
-NOTE-00034,CUST-0054,2026-07-23,analyst.priya,BRANCH_VISIT,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
-NOTE-00035,CUST-0054,2026-01-17,analyst.karan,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00036,CUST-0055,2025-12-21,analyst.karan,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00037,CUST-0056,2026-03-07,analyst.rohan,CALL,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00038,CUST-0058,2025-10-21,analyst.meera,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00039,CUST-0059,2025-10-13,analyst.priya,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00040,CUST-0060,2026-02-11,analyst.priya,CALL,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00041,CUST-0061,2026-08-19,analyst.karan,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00042,CUST-0065,2026-05-11,analyst.rohan,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00043,CUST-0066,2026-02-08,analyst.rohan,BRANCH_VISIT,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00044,CUST-0068,2025-12-17,analyst.meera,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00045,CUST-0069,2026-06-13,analyst.meera,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00046,CUST-0070,2025-10-20,analyst.karan,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00047,CUST-0077,2026-07-23,analyst.meera,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00048,CUST-0078,2026-04-14,analyst.meera,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00049,CUST-0080,2026-01-29,analyst.rohan,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00050,CUST-0081,2026-08-09,analyst.priya,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00051,CUST-0087,2025-10-12,analyst.priya,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00052,CUST-0089,2025-11-26,analyst.rohan,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00053,CUST-0094,2026-06-13,analyst.meera,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00054,CUST-0107,2026-04-10,analyst.karan,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00055,CUST-0108,2025-11-18,analyst.rohan,BRANCH_VISIT,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00056,CUST-0109,2026-03-22,analyst.priya,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00057,CUST-0112,2026-06-10,analyst.meera,BRANCH_VISIT,Sudden burst of UPI transfers to many unrelated handles. Customer says phone was 'used by a friend'. Possible account takeover or money mule.
-NOTE-00058,CUST-0114,2026-04-10,analyst.meera,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00059,CUST-0119,2026-07-19,analyst.karan,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00060,CUST-0120,2026-01-15,analyst.priya,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00061,CUST-0123,2026-03-30,analyst.meera,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00062,CUST-0125,2026-07-06,analyst.karan,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00063,CUST-0130,2026-06-03,analyst.meera,BRANCH_VISIT,"Customer visited branch three times this week with cash bundles, each time asking the teller what amount would 'avoid paperwork'. Declined to provide source of cash."
-NOTE-00064,CUST-0130,2026-08-26,analyst.meera,BRANCH_VISIT,Called customer regarding repeated cash deposits just under 10 lakh. Customer became evasive and said the cash belongs to 'relatives in business'. No documents provided.
-NOTE-00065,CUST-0130,2026-06-20,analyst.karan,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00066,CUST-0132,2026-08-22,analyst.priya,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00067,CUST-0136,2026-06-27,analyst.karan,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00068,CUST-0142,2026-06-11,analyst.priya,CALL,Import advances sent to offshore entity with no shipping documents on file. Inflows labelled FDI from a different tax-haven jurisdiction of similar value. Director unresponsive.
-NOTE-00069,CUST-0145,2026-08-08,analyst.priya,CALL,Customer profile is student with negligible income but account has received multiple lakhs from unknown individuals. Customer said they are 'helping a friend receive money for a commission'.
-NOTE-00070,CUST-0145,2026-09-23,analyst.karan,CALL,Homemaker account receiving high-value transfers. Spouse called on her behalf and refused to share source of funds.
-NOTE-00071,CUST-0152,2025-10-18,analyst.priya,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00072,CUST-0153,2026-02-05,analyst.meera,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00073,CUST-0154,2026-07-24,analyst.priya,CALL,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
-NOTE-00074,CUST-0156,2025-10-13,analyst.priya,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00075,CUST-0157,2026-03-11,analyst.priya,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00076,CUST-0158,2025-10-29,analyst.karan,KYC_REVIEW,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00077,CUST-0163,2026-04-11,analyst.meera,KYC_REVIEW,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00078,CUST-0165,2026-05-13,analyst.meera,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00079,CUST-0166,2026-05-26,analyst.rohan,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00080,CUST-0168,2026-08-21,analyst.priya,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00081,CUST-0169,2026-02-18,analyst.karan,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00082,CUST-0172,2026-08-21,analyst.meera,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00083,CUST-0175,2025-11-10,analyst.priya,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00084,CUST-0178,2026-08-07,analyst.rohan,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00085,CUST-0183,2026-06-30,analyst.priya,KYC_REVIEW,Customer profile is student with negligible income but account has received multiple lakhs from unknown individuals. Customer said they are 'helping a friend receive money for a commission'.
-NOTE-00086,CUST-0183,2026-07-16,analyst.karan,CALL,Homemaker account receiving high-value transfers. Spouse called on her behalf and refused to share source of funds.
-NOTE-00087,CUST-0197,2026-09-04,analyst.meera,BRANCH_VISIT,"Customer visited branch three times this week with cash bundles, each time asking the teller what amount would 'avoid paperwork'. Declined to provide source of cash."
-NOTE-00088,CUST-0197,2026-09-23,analyst.karan,BRANCH_VISIT,Called customer regarding repeated cash deposits just under 10 lakh. Customer became evasive and said the cash belongs to 'relatives in business'. No documents provided.
-NOTE-00089,CUST-0201,2026-09-15,analyst.meera,BRANCH_VISIT,Account inactive for over a year suddenly received large RTGS credits. Customer could not explain the remitters. Requested updated KYC; pending.
-NOTE-00090,CUST-0202,2025-12-01,analyst.priya,KYC_REVIEW,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00091,CUST-0204,2026-07-12,analyst.karan,BRANCH_VISIT,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00092,CUST-0209,2026-06-09,analyst.priya,CALL,Cash-heavy jewellery showroom. Reviewed GST returns and audited financials; cash deposits are consistent with declared turnover. Customer cooperative and transparent.
-NOTE-00093,CUST-0210,2026-01-12,analyst.priya,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00094,CUST-0211,2026-04-05,analyst.priya,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00095,CUST-0215,2026-01-31,analyst.meera,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00096,CUST-0216,2025-10-09,analyst.meera,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00097,CUST-0223,2026-06-06,analyst.rohan,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00098,CUST-0225,2026-07-12,analyst.rohan,KYC_REVIEW,Customer profile is student with negligible income but account has received multiple lakhs from unknown individuals. Customer said they are 'helping a friend receive money for a commission'.
-NOTE-00099,CUST-0225,2026-08-29,analyst.priya,KYC_REVIEW,Homemaker account receiving high-value transfers. Spouse called on her behalf and refused to share source of funds.
-NOTE-00100,CUST-0229,2026-03-10,analyst.priya,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00101,CUST-0230,2026-09-22,analyst.priya,CALL,Account inactive for over a year suddenly received large RTGS credits. Customer could not explain the remitters. Requested updated KYC; pending.
-NOTE-00102,CUST-0230,2026-03-24,analyst.karan,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00103,CUST-0231,2026-09-20,analyst.rohan,KYC_REVIEW,Sudden burst of UPI transfers to many unrelated handles. Customer says phone was 'used by a friend'. Possible account takeover or money mule.
-NOTE-00104,CUST-0234,2025-12-27,analyst.priya,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00105,CUST-0235,2025-10-10,analyst.rohan,BRANCH_VISIT,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00106,CUST-0240,2026-08-24,analyst.rohan,CALL,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00107,CUST-0243,2026-03-12,analyst.priya,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00108,CUST-0247,2025-10-28,analyst.rohan,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00109,CUST-0253,2026-02-15,analyst.rohan,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00110,CUST-0254,2026-01-24,analyst.meera,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00111,CUST-0256,2026-06-02,analyst.meera,CALL,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00112,CUST-0257,2026-09-26,analyst.meera,KYC_REVIEW,"Customer visited branch three times this week with cash bundles, each time asking the teller what amount would 'avoid paperwork'. Declined to provide source of cash."
-NOTE-00113,CUST-0257,2026-06-10,analyst.priya,KYC_REVIEW,Called customer regarding repeated cash deposits just under 10 lakh. Customer became evasive and said the cash belongs to 'relatives in business'. No documents provided.
-NOTE-00114,CUST-0258,2025-12-28,analyst.meera,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00115,CUST-0260,2026-03-18,analyst.meera,KYC_REVIEW,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00116,CUST-0262,2026-01-03,analyst.priya,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00117,CUST-0264,2025-12-28,analyst.rohan,KYC_REVIEW,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00118,CUST-0271,2026-05-02,analyst.karan,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00119,CUST-0272,2026-05-28,analyst.rohan,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00120,CUST-0274,2026-01-10,analyst.karan,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00121,CUST-0276,2026-06-09,analyst.meera,CALL,Pattern of exact lakh settlements with agencies that have no visible business relationship to the customer. Invoices not provided.
-NOTE-00122,CUST-0279,2026-01-21,analyst.meera,CALL,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00123,CUST-0280,2026-07-03,analyst.priya,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00124,CUST-0285,2026-06-01,analyst.karan,KYC_REVIEW,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
-NOTE-00125,CUST-0286,2026-07-11,analyst.karan,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00126,CUST-0287,2025-12-02,analyst.karan,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00127,CUST-0289,2026-04-13,analyst.priya,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00128,CUST-0291,2026-04-22,analyst.priya,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00129,CUST-0294,2025-10-19,analyst.karan,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00130,CUST-0297,2026-08-30,analyst.meera,KYC_REVIEW,Account inactive for over a year suddenly received large RTGS credits. Customer could not explain the remitters. Requested updated KYC; pending.
-NOTE-00131,CUST-0297,2026-04-25,analyst.meera,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00132,CUST-0298,2026-03-21,analyst.priya,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00133,CUST-0301,2026-09-22,analyst.meera,KYC_REVIEW,Funds received and wired to Hong Kong within a day. Customer describes it as trade but cannot name goods or provide bill of lading.
-NOTE-00134,CUST-0303,2026-02-06,analyst.priya,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00135,CUST-0306,2026-07-14,analyst.priya,CALL,Sudden burst of UPI transfers to many unrelated handles. Customer says phone was 'used by a friend'. Possible account takeover or money mule.
-NOTE-00136,CUST-0308,2026-07-11,analyst.karan,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00137,CUST-0309,2026-05-01,analyst.priya,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00138,CUST-0310,2026-02-09,analyst.rohan,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00139,CUST-0311,2026-06-09,analyst.rohan,CALL,Pattern of exact lakh settlements with agencies that have no visible business relationship to the customer. Invoices not provided.
-NOTE-00140,CUST-0313,2026-09-27,analyst.rohan,CALL,Pattern of exact lakh settlements with agencies that have no visible business relationship to the customer. Invoices not provided.
-NOTE-00141,CUST-0317,2026-07-19,analyst.priya,CALL,Sudden burst of UPI transfers to many unrelated handles. Customer says phone was 'used by a friend'. Possible account takeover or money mule.
-NOTE-00142,CUST-0317,2025-10-26,analyst.rohan,KYC_REVIEW,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00143,CUST-0318,2026-03-15,analyst.meera,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00144,CUST-0320,2025-11-06,analyst.rohan,KYC_REVIEW,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00145,CUST-0321,2026-03-20,analyst.karan,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00146,CUST-0325,2026-07-30,analyst.rohan,BRANCH_VISIT,Funds received and wired to Hong Kong within a day. Customer describes it as trade but cannot name goods or provide bill of lading.
-NOTE-00147,CUST-0325,2026-07-28,analyst.meera,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00148,CUST-0326,2026-07-16,analyst.priya,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00149,CUST-0327,2026-05-24,analyst.karan,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00150,CUST-0333,2026-01-15,analyst.meera,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00151,CUST-0334,2026-09-10,analyst.meera,CALL,Import advances sent to offshore entity with no shipping documents on file. Inflows labelled FDI from a different tax-haven jurisdiction of similar value. Director unresponsive.
-NOTE-00152,CUST-0337,2026-06-25,analyst.rohan,BRANCH_VISIT,Funds received and wired to Hong Kong within a day. Customer describes it as trade but cannot name goods or provide bill of lading.
-NOTE-00153,CUST-0337,2026-06-13,analyst.rohan,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00154,CUST-0340,2026-03-23,analyst.meera,KYC_REVIEW,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00155,CUST-0341,2025-11-17,analyst.karan,BRANCH_VISIT,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00156,CUST-0343,2026-09-21,analyst.priya,CALL,Funds received and wired to Hong Kong within a day. Customer describes it as trade but cannot name goods or provide bill of lading.
-NOTE-00157,CUST-0343,2026-09-25,analyst.karan,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00158,CUST-0344,2026-05-20,analyst.priya,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00159,CUST-0354,2025-10-23,analyst.rohan,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00160,CUST-0355,2025-10-21,analyst.rohan,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00161,CUST-0356,2025-10-14,analyst.karan,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00162,CUST-0358,2026-01-26,analyst.rohan,BRANCH_VISIT,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00163,CUST-0365,2025-10-11,analyst.meera,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00164,CUST-0368,2026-05-30,analyst.priya,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00165,CUST-0369,2026-04-30,analyst.karan,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00166,CUST-0374,2026-04-29,analyst.rohan,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00167,CUST-0375,2025-11-02,analyst.rohan,BRANCH_VISIT,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00168,CUST-0376,2026-06-18,analyst.meera,KYC_REVIEW,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
-NOTE-00169,CUST-0376,2025-11-30,analyst.meera,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00170,CUST-0377,2025-11-22,analyst.meera,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00171,CUST-0381,2026-07-23,analyst.rohan,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00172,CUST-0384,2026-09-28,analyst.karan,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00173,CUST-0390,2026-01-02,analyst.meera,BRANCH_VISIT,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00174,CUST-0391,2026-03-26,analyst.karan,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00175,CUST-0392,2026-09-21,analyst.meera,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00176,CUST-0396,2025-12-20,analyst.priya,KYC_REVIEW,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00177,CUST-0402,2026-09-12,analyst.karan,BRANCH_VISIT,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
-NOTE-00178,CUST-0403,2025-12-13,analyst.karan,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00179,CUST-0407,2026-04-19,analyst.meera,KYC_REVIEW,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00180,CUST-0411,2026-08-08,analyst.karan,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00181,CUST-0416,2026-08-21,analyst.rohan,BRANCH_VISIT,Import advances sent to offshore entity with no shipping documents on file. Inflows labelled FDI from a different tax-haven jurisdiction of similar value. Director unresponsive.
-NOTE-00182,CUST-0418,2026-02-24,analyst.meera,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00183,CUST-0419,2026-06-07,analyst.priya,CALL,Pattern of exact lakh settlements with agencies that have no visible business relationship to the customer. Invoices not provided.
-NOTE-00184,CUST-0420,2026-01-11,analyst.rohan,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00185,CUST-0421,2026-06-14,analyst.rohan,BRANCH_VISIT,Import advances sent to offshore entity with no shipping documents on file. Inflows labelled FDI from a different tax-haven jurisdiction of similar value. Director unresponsive.
-NOTE-00186,CUST-0421,2026-09-30,analyst.priya,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00187,CUST-0422,2026-09-15,analyst.meera,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00188,CUST-0426,2026-08-25,analyst.priya,CALL,Cash-heavy jewellery showroom. Reviewed GST returns and audited financials; cash deposits are consistent with declared turnover. Customer cooperative and transparent.
-NOTE-00189,CUST-0428,2025-12-27,analyst.rohan,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00190,CUST-0429,2026-05-17,analyst.meera,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
-NOTE-00191,CUST-0434,2026-08-24,analyst.priya,CALL,Sudden burst of UPI transfers to many unrelated handles. Customer says phone was 'used by a friend'. Possible account takeover or money mule.
-NOTE-00192,CUST-0438,2025-11-28,analyst.meera,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00193,CUST-0447,2026-06-06,analyst.priya,BRANCH_VISIT,"Customer visited branch three times this week with cash bundles, each time asking the teller what amount would 'avoid paperwork'. Declined to provide source of cash."
-NOTE-00194,CUST-0447,2026-08-04,analyst.priya,BRANCH_VISIT,Called customer regarding repeated cash deposits just under 10 lakh. Customer became evasive and said the cash belongs to 'relatives in business'. No documents provided.
-NOTE-00195,CUST-0447,2026-08-27,analyst.priya,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00196,CUST-0448,2026-05-21,analyst.rohan,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
-NOTE-00197,CUST-0449,2025-12-14,analyst.rohan,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00198,CUST-0454,2026-08-25,analyst.karan,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00199,CUST-0455,2026-07-09,analyst.priya,KYC_REVIEW,Customer profile is student with negligible income but account has received multiple lakhs from unknown individuals. Customer said they are 'helping a friend receive money for a commission'.
-NOTE-00200,CUST-0455,2026-06-25,analyst.meera,CALL,Homemaker account receiving high-value transfers. Spouse called on her behalf and refused to share source of funds.
-NOTE-00201,CUST-0455,2026-05-22,analyst.priya,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00202,CUST-0456,2026-01-16,analyst.priya,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00203,CUST-0459,2026-01-28,analyst.priya,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00204,CUST-0460,2025-12-12,analyst.rohan,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00205,CUST-0466,2026-07-15,analyst.meera,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00206,CUST-0476,2026-09-23,analyst.karan,CALL,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
-NOTE-00207,CUST-0479,2026-01-06,analyst.rohan,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00208,CUST-0480,2025-12-13,analyst.meera,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
-NOTE-00209,CUST-0482,2026-08-17,analyst.karan,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00210,CUST-0489,2026-09-01,analyst.meera,KYC_REVIEW,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
-NOTE-00211,CUST-0490,2026-04-02,analyst.rohan,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00212,CUST-0493,2026-08-20,analyst.meera,BRANCH_VISIT,"Business account received many small UPI transfers labelled 'loan repayment' from individuals, then a single SWIFT to UAE. Customer is not a registered lender."
-NOTE-00213,CUST-0494,2026-01-06,analyst.karan,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
-NOTE-00214,CUST-0496,2026-05-19,analyst.priya,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
-NOTE-00215,CUST-0498,2025-10-11,analyst.meera,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
-NOTE-00216,CUST-0499,2026-06-17,analyst.karan,BRANCH_VISIT,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
+NOTE-00001,CUST-0001,2026-06-26,analyst.meera,CALL,"Customer visited branch three times this week with cash bundles, each time asking the teller what amount would 'avoid paperwork'. Declined to provide source of cash."
+NOTE-00002,CUST-0001,2026-07-13,analyst.karan,KYC_REVIEW,Called customer regarding repeated cash deposits just under 10 lakh. Customer became evasive and said the cash belongs to 'relatives in business'. No documents provided.
+NOTE-00003,CUST-0002,2026-07-02,analyst.meera,KYC_REVIEW,Name screening returned a potential watchlist match. Customer provided passport copy; date of birth differs from listed individual. Pending L2 review.
+NOTE-00004,CUST-0002,2026-01-22,analyst.meera,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00005,CUST-0003,2026-08-18,analyst.priya,CALL,Name screening returned a potential watchlist match. Customer provided passport copy; date of birth differs from listed individual. Pending L2 review.
+NOTE-00006,CUST-0004,2026-09-27,analyst.priya,CALL,Name screening returned a potential watchlist match. Customer provided passport copy; date of birth differs from listed individual. Pending L2 review.
+NOTE-00007,CUST-0004,2025-10-31,analyst.rohan,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00008,CUST-0005,2026-09-23,analyst.rohan,BRANCH_VISIT,Name screening returned a potential watchlist match. Customer provided passport copy; date of birth differs from listed individual. Pending L2 review.
+NOTE-00009,CUST-0006,2026-09-17,analyst.karan,KYC_REVIEW,Name screening returned a potential watchlist match. Customer provided passport copy; date of birth differs from listed individual. Pending L2 review.
+NOTE-00010,CUST-0007,2026-08-31,analyst.rohan,BRANCH_VISIT,Name screening returned a potential watchlist match. Customer provided passport copy; date of birth differs from listed individual. Pending L2 review.
+NOTE-00011,CUST-0008,2026-08-27,analyst.karan,KYC_REVIEW,PEP customer. Large advisory fees received from infrastructure contractors who bid for municipal tenders. Enhanced due diligence questionnaire sent.
+NOTE-00012,CUST-0009,2026-06-07,analyst.meera,CALL,PEP customer. Large advisory fees received from infrastructure contractors who bid for municipal tenders. Enhanced due diligence questionnaire sent.
+NOTE-00013,CUST-0010,2026-09-22,analyst.priya,BRANCH_VISIT,PEP customer. Large advisory fees received from infrastructure contractors who bid for municipal tenders. Enhanced due diligence questionnaire sent.
+NOTE-00014,CUST-0011,2026-06-30,analyst.meera,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00015,CUST-0015,2025-12-27,analyst.meera,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00016,CUST-0016,2026-01-13,analyst.karan,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
+NOTE-00017,CUST-0017,2026-04-02,analyst.rohan,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00018,CUST-0018,2026-05-31,analyst.priya,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00019,CUST-0022,2025-12-15,analyst.meera,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00020,CUST-0024,2026-04-20,analyst.meera,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00021,CUST-0025,2026-05-30,analyst.karan,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00022,CUST-0030,2025-12-08,analyst.karan,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
+NOTE-00023,CUST-0033,2026-08-24,analyst.priya,BRANCH_VISIT,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
+NOTE-00024,CUST-0033,2026-05-11,analyst.priya,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
+NOTE-00025,CUST-0034,2026-09-08,analyst.karan,KYC_REVIEW,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00026,CUST-0035,2026-07-15,analyst.karan,CALL,Customer profile is student with negligible income but account has received multiple lakhs from unknown individuals. Customer said they are 'helping a friend receive money for a commission'.
+NOTE-00027,CUST-0035,2026-09-26,analyst.rohan,CALL,Homemaker account receiving high-value transfers. Spouse called on her behalf and refused to share source of funds.
+NOTE-00028,CUST-0036,2026-09-21,analyst.meera,BRANCH_VISIT,"Customer visited branch three times this week with cash bundles, each time asking the teller what amount would 'avoid paperwork'. Declined to provide source of cash."
+NOTE-00029,CUST-0036,2026-07-31,analyst.meera,CALL,Called customer regarding repeated cash deposits just under 10 lakh. Customer became evasive and said the cash belongs to 'relatives in business'. No documents provided.
+NOTE-00030,CUST-0041,2026-09-03,analyst.rohan,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00031,CUST-0042,2026-04-24,analyst.karan,CALL,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00032,CUST-0044,2026-09-04,analyst.meera,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00033,CUST-0045,2026-09-06,analyst.meera,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
+NOTE-00034,CUST-0048,2026-09-23,analyst.karan,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
+NOTE-00035,CUST-0049,2026-01-18,analyst.priya,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00036,CUST-0051,2026-07-24,analyst.karan,CALL,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00037,CUST-0052,2026-09-24,analyst.karan,CALL,Account inactive for over a year suddenly received large RTGS credits. Customer could not explain the remitters. Requested updated KYC; pending.
+NOTE-00038,CUST-0052,2026-09-02,analyst.rohan,BRANCH_VISIT,Routine periodic KYC review completed. No adverse findings. Documents up to date.
+NOTE-00039,CUST-0053,2026-09-28,analyst.karan,KYC_REVIEW,Account inactive for over a year suddenly received large RTGS credits. Customer could not explain the remitters. Requested updated KYC; pending.
+NOTE-00040,CUST-0054,2026-06-14,analyst.priya,CALL,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
+NOTE-00041,CUST-0059,2026-07-20,analyst.priya,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00042,CUST-0062,2026-02-26,analyst.meera,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00043,CUST-0065,2026-07-02,analyst.rohan,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00044,CUST-0069,2026-02-22,analyst.rohan,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00045,CUST-0070,2026-08-31,analyst.meera,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00046,CUST-0073,2026-03-25,analyst.karan,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00047,CUST-0075,2026-08-17,analyst.meera,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00048,CUST-0076,2025-10-13,analyst.rohan,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00049,CUST-0081,2026-09-06,analyst.meera,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00050,CUST-0084,2025-10-21,analyst.karan,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00051,CUST-0085,2026-08-11,analyst.meera,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00052,CUST-0086,2026-05-13,analyst.karan,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00053,CUST-0099,2025-12-21,analyst.meera,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00054,CUST-0100,2026-03-20,analyst.priya,KYC_REVIEW,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00055,CUST-0101,2026-07-04,analyst.meera,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00056,CUST-0102,2025-12-11,analyst.karan,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00057,CUST-0106,2025-11-22,analyst.priya,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00058,CUST-0107,2026-08-10,analyst.priya,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00059,CUST-0112,2026-09-04,analyst.priya,BRANCH_VISIT,Sudden burst of UPI transfers to many unrelated handles. Customer says phone was 'used by a friend'. Possible account takeover or money mule.
+NOTE-00060,CUST-0113,2026-02-09,analyst.priya,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00061,CUST-0115,2025-11-21,analyst.meera,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00062,CUST-0116,2026-09-03,analyst.rohan,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00063,CUST-0122,2026-04-17,analyst.rohan,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00064,CUST-0130,2026-09-20,analyst.priya,KYC_REVIEW,"Customer visited branch three times this week with cash bundles, each time asking the teller what amount would 'avoid paperwork'. Declined to provide source of cash."
+NOTE-00065,CUST-0130,2026-06-14,analyst.rohan,CALL,Called customer regarding repeated cash deposits just under 10 lakh. Customer became evasive and said the cash belongs to 'relatives in business'. No documents provided.
+NOTE-00066,CUST-0134,2025-11-17,analyst.karan,BRANCH_VISIT,Routine periodic KYC review completed. No adverse findings. Documents up to date.
+NOTE-00067,CUST-0137,2026-02-22,analyst.priya,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00068,CUST-0139,2026-06-07,analyst.priya,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00069,CUST-0141,2025-10-29,analyst.priya,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00070,CUST-0142,2026-06-09,analyst.karan,BRANCH_VISIT,Import advances sent to offshore entity with no shipping documents on file. Inflows labelled FDI from a different tax-haven jurisdiction of similar value. Director unresponsive.
+NOTE-00071,CUST-0143,2026-08-01,analyst.meera,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00072,CUST-0144,2026-06-12,analyst.karan,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00073,CUST-0145,2026-07-08,analyst.meera,BRANCH_VISIT,Customer profile is student with negligible income but account has received multiple lakhs from unknown individuals. Customer said they are 'helping a friend receive money for a commission'.
+NOTE-00074,CUST-0145,2026-07-13,analyst.karan,KYC_REVIEW,Homemaker account receiving high-value transfers. Spouse called on her behalf and refused to share source of funds.
+NOTE-00075,CUST-0149,2026-07-05,analyst.karan,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00076,CUST-0150,2025-10-12,analyst.rohan,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00077,CUST-0151,2025-10-04,analyst.karan,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00078,CUST-0153,2026-02-08,analyst.priya,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00079,CUST-0154,2026-07-01,analyst.karan,KYC_REVIEW,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
+NOTE-00080,CUST-0155,2026-07-26,analyst.priya,CALL,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00081,CUST-0157,2026-04-11,analyst.meera,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00082,CUST-0162,2025-11-05,analyst.karan,KYC_REVIEW,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00083,CUST-0166,2026-06-16,analyst.meera,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00084,CUST-0168,2025-11-23,analyst.meera,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00085,CUST-0169,2026-05-25,analyst.karan,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00086,CUST-0170,2026-05-08,analyst.karan,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00087,CUST-0175,2026-02-06,analyst.karan,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00088,CUST-0179,2025-12-09,analyst.karan,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00089,CUST-0181,2026-07-17,analyst.meera,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00090,CUST-0183,2026-08-20,analyst.rohan,KYC_REVIEW,Customer profile is student with negligible income but account has received multiple lakhs from unknown individuals. Customer said they are 'helping a friend receive money for a commission'.
+NOTE-00091,CUST-0183,2026-08-19,analyst.rohan,CALL,Homemaker account receiving high-value transfers. Spouse called on her behalf and refused to share source of funds.
+NOTE-00092,CUST-0185,2026-02-15,analyst.rohan,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00093,CUST-0186,2026-04-07,analyst.rohan,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00094,CUST-0190,2026-01-16,analyst.rohan,KYC_REVIEW,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00095,CUST-0192,2026-03-09,analyst.priya,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00096,CUST-0193,2026-01-14,analyst.rohan,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00097,CUST-0197,2026-08-30,analyst.priya,KYC_REVIEW,"Customer visited branch three times this week with cash bundles, each time asking the teller what amount would 'avoid paperwork'. Declined to provide source of cash."
+NOTE-00098,CUST-0197,2026-07-19,analyst.karan,CALL,Called customer regarding repeated cash deposits just under 10 lakh. Customer became evasive and said the cash belongs to 'relatives in business'. No documents provided.
+NOTE-00099,CUST-0201,2026-08-23,analyst.meera,CALL,Account inactive for over a year suddenly received large RTGS credits. Customer could not explain the remitters. Requested updated KYC; pending.
+NOTE-00100,CUST-0203,2026-06-20,analyst.meera,BRANCH_VISIT,Routine periodic KYC review completed. No adverse findings. Documents up to date.
+NOTE-00101,CUST-0205,2026-08-23,analyst.karan,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00102,CUST-0208,2025-10-29,analyst.meera,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00103,CUST-0209,2026-08-27,analyst.priya,BRANCH_VISIT,Cash-heavy jewellery showroom. Reviewed GST returns and audited financials; cash deposits are consistent with declared turnover. Customer cooperative and transparent.
+NOTE-00104,CUST-0211,2026-06-12,analyst.karan,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00105,CUST-0212,2026-07-01,analyst.priya,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
+NOTE-00106,CUST-0215,2026-02-06,analyst.meera,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00107,CUST-0216,2026-09-22,analyst.karan,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00108,CUST-0217,2026-06-15,analyst.karan,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00109,CUST-0218,2026-09-22,analyst.meera,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00110,CUST-0219,2026-03-22,analyst.meera,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00111,CUST-0220,2025-10-17,analyst.karan,BRANCH_VISIT,Routine periodic KYC review completed. No adverse findings. Documents up to date.
+NOTE-00112,CUST-0225,2026-06-17,analyst.meera,BRANCH_VISIT,Customer profile is student with negligible income but account has received multiple lakhs from unknown individuals. Customer said they are 'helping a friend receive money for a commission'.
+NOTE-00113,CUST-0225,2026-06-22,analyst.karan,KYC_REVIEW,Homemaker account receiving high-value transfers. Spouse called on her behalf and refused to share source of funds.
+NOTE-00114,CUST-0230,2026-06-24,analyst.meera,KYC_REVIEW,Account inactive for over a year suddenly received large RTGS credits. Customer could not explain the remitters. Requested updated KYC; pending.
+NOTE-00115,CUST-0231,2026-06-10,analyst.meera,CALL,Sudden burst of UPI transfers to many unrelated handles. Customer says phone was 'used by a friend'. Possible account takeover or money mule.
+NOTE-00116,CUST-0232,2026-02-27,analyst.karan,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00117,CUST-0233,2026-05-18,analyst.meera,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00118,CUST-0237,2026-03-18,analyst.priya,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00119,CUST-0238,2026-06-28,analyst.karan,KYC_REVIEW,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00120,CUST-0240,2025-12-25,analyst.priya,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00121,CUST-0241,2026-04-23,analyst.rohan,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00122,CUST-0246,2026-05-08,analyst.meera,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00123,CUST-0247,2026-09-06,analyst.meera,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00124,CUST-0253,2025-12-28,analyst.meera,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00125,CUST-0256,2025-11-08,analyst.rohan,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00126,CUST-0257,2026-08-01,analyst.karan,CALL,"Customer visited branch three times this week with cash bundles, each time asking the teller what amount would 'avoid paperwork'. Declined to provide source of cash."
+NOTE-00127,CUST-0257,2026-06-11,analyst.meera,KYC_REVIEW,Called customer regarding repeated cash deposits just under 10 lakh. Customer became evasive and said the cash belongs to 'relatives in business'. No documents provided.
+NOTE-00128,CUST-0259,2025-12-07,analyst.priya,CALL,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00129,CUST-0265,2026-05-26,analyst.karan,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00130,CUST-0268,2026-07-15,analyst.karan,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00131,CUST-0271,2026-04-16,analyst.karan,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00132,CUST-0272,2026-09-18,analyst.karan,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00133,CUST-0276,2026-06-21,analyst.meera,CALL,Pattern of exact lakh settlements with agencies that have no visible business relationship to the customer. Invoices not provided.
+NOTE-00134,CUST-0278,2026-06-19,analyst.rohan,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00135,CUST-0279,2026-09-07,analyst.rohan,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00136,CUST-0283,2025-10-20,analyst.rohan,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00137,CUST-0285,2026-07-14,analyst.priya,KYC_REVIEW,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
+NOTE-00138,CUST-0285,2025-12-27,analyst.karan,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00139,CUST-0286,2026-03-31,analyst.meera,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00140,CUST-0287,2026-09-08,analyst.karan,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
+NOTE-00141,CUST-0288,2026-09-27,analyst.meera,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00142,CUST-0292,2026-09-11,analyst.meera,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
+NOTE-00143,CUST-0296,2025-11-16,analyst.karan,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00144,CUST-0297,2026-08-26,analyst.rohan,CALL,Account inactive for over a year suddenly received large RTGS credits. Customer could not explain the remitters. Requested updated KYC; pending.
+NOTE-00145,CUST-0299,2026-08-28,analyst.priya,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00146,CUST-0301,2026-07-10,analyst.priya,CALL,Funds received and wired to Hong Kong within a day. Customer describes it as trade but cannot name goods or provide bill of lading.
+NOTE-00147,CUST-0301,2026-08-06,analyst.karan,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00148,CUST-0304,2026-05-18,analyst.priya,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00149,CUST-0306,2026-08-24,analyst.karan,CALL,Sudden burst of UPI transfers to many unrelated handles. Customer says phone was 'used by a friend'. Possible account takeover or money mule.
+NOTE-00150,CUST-0310,2026-05-26,analyst.meera,KYC_REVIEW,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00151,CUST-0311,2026-09-24,analyst.meera,KYC_REVIEW,Pattern of exact lakh settlements with agencies that have no visible business relationship to the customer. Invoices not provided.
+NOTE-00152,CUST-0312,2025-12-06,analyst.priya,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00153,CUST-0313,2026-06-18,analyst.rohan,BRANCH_VISIT,Pattern of exact lakh settlements with agencies that have no visible business relationship to the customer. Invoices not provided.
+NOTE-00154,CUST-0317,2026-07-17,analyst.karan,BRANCH_VISIT,Sudden burst of UPI transfers to many unrelated handles. Customer says phone was 'used by a friend'. Possible account takeover or money mule.
+NOTE-00155,CUST-0322,2026-02-18,analyst.priya,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00156,CUST-0325,2026-09-14,analyst.meera,BRANCH_VISIT,Funds received and wired to Hong Kong within a day. Customer describes it as trade but cannot name goods or provide bill of lading.
+NOTE-00157,CUST-0325,2026-06-26,analyst.meera,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00158,CUST-0326,2026-05-21,analyst.rohan,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00159,CUST-0327,2026-05-05,analyst.priya,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00160,CUST-0334,2026-07-18,analyst.rohan,BRANCH_VISIT,Import advances sent to offshore entity with no shipping documents on file. Inflows labelled FDI from a different tax-haven jurisdiction of similar value. Director unresponsive.
+NOTE-00161,CUST-0335,2026-07-08,analyst.rohan,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00162,CUST-0337,2026-08-14,analyst.priya,KYC_REVIEW,Funds received and wired to Hong Kong within a day. Customer describes it as trade but cannot name goods or provide bill of lading.
+NOTE-00163,CUST-0338,2025-12-24,analyst.priya,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00164,CUST-0339,2026-06-04,analyst.meera,KYC_REVIEW,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00165,CUST-0343,2026-07-31,analyst.karan,KYC_REVIEW,Funds received and wired to Hong Kong within a day. Customer describes it as trade but cannot name goods or provide bill of lading.
+NOTE-00166,CUST-0351,2025-11-05,analyst.karan,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00167,CUST-0352,2026-07-13,analyst.karan,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00168,CUST-0353,2026-02-05,analyst.rohan,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00169,CUST-0355,2026-07-26,analyst.meera,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00170,CUST-0356,2026-01-06,analyst.meera,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00171,CUST-0360,2026-08-04,analyst.meera,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00172,CUST-0363,2025-10-22,analyst.rohan,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00173,CUST-0365,2026-01-22,analyst.meera,CALL,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00174,CUST-0368,2026-03-24,analyst.rohan,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00175,CUST-0372,2026-06-07,analyst.meera,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00176,CUST-0375,2025-12-12,analyst.meera,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00177,CUST-0376,2026-08-03,analyst.meera,CALL,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
+NOTE-00178,CUST-0385,2025-10-07,analyst.rohan,CALL,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00179,CUST-0387,2026-03-21,analyst.rohan,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00180,CUST-0389,2026-01-16,analyst.rohan,CALL,Routine periodic KYC review completed. No adverse findings. Documents up to date.
+NOTE-00181,CUST-0395,2026-05-27,analyst.rohan,KYC_REVIEW,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00182,CUST-0402,2026-09-14,analyst.priya,BRANCH_VISIT,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
+NOTE-00183,CUST-0402,2026-09-26,analyst.karan,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00184,CUST-0403,2026-02-12,analyst.priya,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00185,CUST-0405,2026-05-29,analyst.priya,CALL,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00186,CUST-0410,2026-01-10,analyst.priya,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00187,CUST-0415,2026-03-26,analyst.meera,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00188,CUST-0416,2026-06-03,analyst.karan,CALL,Import advances sent to offshore entity with no shipping documents on file. Inflows labelled FDI from a different tax-haven jurisdiction of similar value. Director unresponsive.
+NOTE-00189,CUST-0416,2026-06-26,analyst.rohan,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00190,CUST-0419,2026-08-03,analyst.meera,KYC_REVIEW,Pattern of exact lakh settlements with agencies that have no visible business relationship to the customer. Invoices not provided.
+NOTE-00191,CUST-0421,2026-08-12,analyst.meera,KYC_REVIEW,Import advances sent to offshore entity with no shipping documents on file. Inflows labelled FDI from a different tax-haven jurisdiction of similar value. Director unresponsive.
+NOTE-00192,CUST-0421,2026-08-16,analyst.meera,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00193,CUST-0422,2025-10-03,analyst.priya,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00194,CUST-0424,2026-08-23,analyst.meera,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00195,CUST-0425,2026-05-25,analyst.meera,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00196,CUST-0426,2026-08-10,analyst.karan,KYC_REVIEW,Cash-heavy jewellery showroom. Reviewed GST returns and audited financials; cash deposits are consistent with declared turnover. Customer cooperative and transparent.
+NOTE-00197,CUST-0427,2025-10-21,analyst.meera,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00198,CUST-0428,2026-04-20,analyst.meera,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00199,CUST-0434,2026-08-14,analyst.priya,BRANCH_VISIT,Sudden burst of UPI transfers to many unrelated handles. Customer says phone was 'used by a friend'. Possible account takeover or money mule.
+NOTE-00200,CUST-0441,2026-05-10,analyst.priya,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00201,CUST-0442,2025-10-06,analyst.karan,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00202,CUST-0447,2026-09-12,analyst.rohan,KYC_REVIEW,"Customer visited branch three times this week with cash bundles, each time asking the teller what amount would 'avoid paperwork'. Declined to provide source of cash."
+NOTE-00203,CUST-0447,2026-09-11,analyst.priya,KYC_REVIEW,Called customer regarding repeated cash deposits just under 10 lakh. Customer became evasive and said the cash belongs to 'relatives in business'. No documents provided.
+NOTE-00204,CUST-0449,2025-10-08,analyst.meera,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
+NOTE-00205,CUST-0451,2026-01-11,analyst.priya,CALL,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00206,CUST-0452,2026-02-17,analyst.priya,CALL,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00207,CUST-0454,2026-04-08,analyst.karan,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00208,CUST-0455,2026-08-21,analyst.meera,CALL,Customer profile is student with negligible income but account has received multiple lakhs from unknown individuals. Customer said they are 'helping a friend receive money for a commission'.
+NOTE-00209,CUST-0455,2026-08-29,analyst.karan,KYC_REVIEW,Homemaker account receiving high-value transfers. Spouse called on her behalf and refused to share source of funds.
+NOTE-00210,CUST-0456,2026-08-21,analyst.priya,KYC_REVIEW,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00211,CUST-0459,2026-01-21,analyst.meera,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00212,CUST-0460,2026-07-11,analyst.priya,BRANCH_VISIT,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00213,CUST-0467,2026-05-18,analyst.rohan,CALL,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00214,CUST-0471,2025-10-18,analyst.rohan,CALL,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00215,CUST-0472,2026-01-22,analyst.meera,KYC_REVIEW,Routine periodic KYC review completed. No adverse findings. Documents up to date.
+NOTE-00216,CUST-0474,2025-10-05,analyst.rohan,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00217,CUST-0475,2026-01-15,analyst.rohan,BRANCH_VISIT,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00218,CUST-0476,2026-08-10,analyst.rohan,CALL,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
+NOTE-00219,CUST-0477,2025-12-01,analyst.karan,KYC_REVIEW,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00220,CUST-0480,2026-01-02,analyst.rohan,BRANCH_VISIT,Customer explained large NEFT as property down payment; sale agreement copy provided.
+NOTE-00221,CUST-0483,2025-10-12,analyst.karan,BRANCH_VISIT,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00222,CUST-0485,2026-07-10,analyst.priya,KYC_REVIEW,Inquiry about fixed deposit rates. No unusual activity observed.
+NOTE-00223,CUST-0488,2026-03-31,analyst.karan,CALL,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00224,CUST-0489,2026-06-20,analyst.meera,KYC_REVIEW,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
+NOTE-00225,CUST-0490,2026-06-08,analyst.karan,BRANCH_VISIT,Customer called to update mobile number. Verified via OTP. No concerns.
+NOTE-00226,CUST-0493,2026-07-27,analyst.meera,CALL,"Business account received many small UPI transfers labelled 'loan repayment' from individuals, then a single SWIFT to UAE. Customer is not a registered lender."
+NOTE-00227,CUST-0496,2026-09-04,analyst.rohan,KYC_REVIEW,"Branch visit for locker renewal. Customer courteous, KYC current."
+NOTE-00228,CUST-0498,2025-12-17,analyst.rohan,KYC_REVIEW,Customer requested increase in UPI limit for home renovation payments. Supporting quotation shared.
+NOTE-00229,CUST-0499,2026-06-12,analyst.meera,BRANCH_VISIT,Account appears to be part of a circular transfer chain with other customers at different branches. Customer claims they are business partners but no partnership deed exists.
