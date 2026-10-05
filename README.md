@@ -1,204 +1,279 @@
-# TraceLedger – AML & Fraud Investigation Copilot (Snowflake)
+<div align="center">
 
-A compliance analyst asks *"Why was ACC-1042 flagged, and does it need an STR?"* TraceLedger shows the risky transactions, cites the exact policy clause they breach, and drafts an audit-ready Suspicious Transaction Report. Everything is built on Snowflake: SQL rules, Semantic View + Cortex Analyst, Cortex Search, Cortex Agent and Streamlit in Snowflake.
+# 🔎 TraceLedger
 
-```
- DATA  ─▶  SIGNALS  ─▶  INTELLIGENCE (Analyst + Search + Agent)  ─▶  APP & REPORTS
-   ▲                                                                     │
-   └──────────── Governance: roles, masking, audit log ◀────────────────┘
-```
+### The AML & Fraud Investigation Copilot, built entirely on Snowflake
 
-## Build status
+*From suspicious signal → cited evidence → audit-ready Suspicious Transaction Report, in minutes instead of days.*
 
-| Layer | Status |
+**Challenge track:** Risk, Fraud and Regulatory Intelligence Copilot
+
+![Snowflake](https://img.shields.io/badge/Snowflake-Native-29B5E8?logo=snowflake&logoColor=white)
+![Cortex Agent](https://img.shields.io/badge/Cortex-Agent-0A66C2)
+![Cortex Analyst](https://img.shields.io/badge/Cortex-Analyst-0A66C2)
+![Cortex Search](https://img.shields.io/badge/Cortex-Search-0A66C2)
+![Semantic View](https://img.shields.io/badge/Semantic-View-6f42c1)
+![Dynamic Tables](https://img.shields.io/badge/Dynamic-Tables-6f42c1)
+![Streamlit](https://img.shields.io/badge/Streamlit-in%20Snowflake-FF4B4B?logo=streamlit&logoColor=white)
+![Governed](https://img.shields.io/badge/Masking%20%2B%20Row%20Access-Governed-2ea44f)
+
+</div>
+
+---
+
+## ⚡ TraceLedger in 30 seconds
+
+> A compliance analyst asks: **"Why was account ACC-1042 flagged, and does it need an STR?"**
+>
+> TraceLedger answers in one screen:
+> - **What happened:** 9 cash deposits of ₹9.2–9.8 lakh, each just under the ₹10 lakh reporting threshold, followed by ₹85 lakh wired to a UAE company on the sanctions watchlist.
+> - **The evidence:** the exact transaction IDs.
+> - **The rule broken:** *"AML Policy §4.2 Structuring"*, quoted from the bank's own policy document.
+> - **The risk score:** `Score 100 = Sanctions 50 + Structuring 35 + Income mismatch 20 + Adverse media 10`. No black box.
+> - **The next step:** a one-click **Suspicious Transaction Report draft** that cites every fact. A compliance head approves it (maker-checker), and every step lands in an immutable audit trail.
+
+Everything runs **inside Snowflake**: data, rules, AI, app and governance. No data leaves the platform.
+
+---
+
+## 🎯 The problem
+
+Banks and NBFCs are legally required to detect money laundering and report it to the Financial Intelligence Unit (FIU-IND) **within 7 working days**. Today, that process is broken:
+
+| Pain point | Reality in compliance teams |
 |---|---|
-| 1. Data foundation (synthetic data, policy docs, tables, load) | ✅ done |
-| 2. Signal engine (rules, sanctions fuzzy match, network, risk score) | ✅ done |
-| 3. Intelligence (semantic view, Cortex Search, Agent) | ✅ done |
-| 4. Streamlit app | ✅ done (deployed) |
-| 5. Governance (roles, masking, row access, audit) | ✅ built |
-| 6. Polish (eval set, demo) | ⏳ next |
+| **Alert fatigue** | Rule engines raise thousands of alerts, and over 90% are false positives. Analysts drown. |
+| **Black-box scores** | ML risk scores can't be explained to a regulator, so they can't be defended. |
+| **Scattered evidence** | Transactions, KYC, sanctions lists, news, call notes and policy PDFs all live in different systems. One investigation means 6+ tools. |
+| **Manual reporting** | Writing a single STR takes **2–4 hours** of copy-pasting transaction IDs and policy clauses. |
+| **Audit risk** | Regulators ask *"why did you close this alert?"* Without a trail of who saw what and why, the bank is exposed to penalties. |
+| **Data privacy** | Analysts often see full PII (names, PAN, phone) they don't need. |
 
-## Repository layout
+## 💡 Our solution
 
+TraceLedger is an **explainable, governed investigation copilot** that covers the whole AML lifecycle, from **signal → evidence → decision → report → audit**, on one Snowflake platform.
+
+| What makes it different | How |
+|---|---|
+| 🧾 **Every alert is explainable** | 11 SQL rules, each mapped to a numbered policy clause. Every alert carries its evidence transaction IDs and a plain-English reason. |
+| 🕸️ **Finds what single-account rules miss** | Recursive SQL detects **mule rings** (A→B→C→D→A) and **fan-in hubs**. Fuzzy matching (Jaro-Winkler + edit distance) catches **sanctions near-matches**. |
+| ⏱️ **Real time** | **Dynamic Tables** recompute alerts and scores within ~1 minute of a new transaction. |
+| 🤖 **A copilot that cites, never guesses** | A **Cortex Agent** combines **Cortex Analyst** (SQL over a semantic view) with **Cortex Search** (policies, analyst notes, news). Every claim must cite an ID; otherwise it answers *"Insufficient evidence"*. |
+| 📝 **STR in one click, with a guardrail** | Cortex AI drafts the STR or closure memo from the case evidence. A **citation guardrail** blocks saving if the AI cites any ID that isn't in the evidence. |
+| 🔐 **Governed by design** | Roles, **dynamic masking** of PII, **row access by region**, PII tags, maker-checker approvals and an **insert-only audit log**. |
+| 🎛️ **Policy tuning, not guesswork** | A **What-If simulator** shows how many alerts a new threshold would create before the Compliance Head applies it. |
+
+---
+
+## 🏗️ Architecture
+
+### End-to-end view
+
+```mermaid
+flowchart LR
+    SD[("📊 Structured data<br/>Customers & KYC · Accounts<br/>Transactions · Loans<br/>Sanctions list")]
+    UD[/"📄 Unstructured data<br/>AML policy · Regulatory guidance<br/>Analyst notes · Adverse media"/]
+
+    subgraph SF["❄️ Snowflake: one governed platform"]
+        direction LR
+        subgraph SIG["⚙️ Signal engine"]
+            R["11 explainable rules<br/>+ sanctions fuzzy match<br/>+ mule-ring graph"]
+            DT[["Dynamic Tables<br/>ALERTS · RISK_SCORES"]]
+            R --> DT
+        end
+        subgraph INT["🧠 Cortex AI"]
+            SV["Semantic View<br/>→ Cortex Analyst"]
+            CS["Cortex Search ×3<br/>policy · notes · news"]
+            AG{{"Cortex Agent<br/>TraceLedger Copilot"}}
+            SV --> AG
+            CS --> AG
+        end
+        APP["🖥️ Streamlit app<br/>Command Center · Customer 360<br/>Copilot · Cases · STR reports<br/>What-If · Audit trail"]
+        GV["🔐 Governance<br/>roles · masking · row access<br/>tags · audit log · maker-checker"]
+    end
+
+    U(("👩‍💼 Analyst<br/>👨‍⚖️ Compliance Head<br/>🕵️ Auditor"))
+
+    SD --> R
+    UD -- "AI_CLASSIFY · SENTIMENT" --> CS
+    DT --> SV
+    DT --> APP
+    AG --> APP
+    GV -. enforces .-> APP
+    APP <--> U
 ```
-data_gen/generate_data.py      synthetic data generator (deterministic, stdlib only)
-data_gen/build_policy_pdfs.py  renders policy markdown -> PDF (needs reportlab)
-data/*.csv                     generated data, ready to upload
-docs/policies/*.md             AML policy, regulatory guidance, Basel/liquidity note
-docs/policies/pdf/*.pdf        the same documents as PDFs, for AI_PARSE_DOCUMENT
-sql/bootstrap.sql              one-click setup straight from GitHub (Git integration)
-sql/00_setup.sql               warehouse, database, schemas, stages
-sql/01_tables.sql              table DDL
-sql/02_load.sql                COPY INTO from stage
-sql/03_validate.sql            row counts and first look at the fraud patterns
-sql/04_signals_rules.sql       rule catalog, tunable parameters, 8 transaction-monitoring rules, mule-network detection
-sql/05_signals_screening.sql   sanctions fuzzy screening, PEP rule, adverse-media linking
-sql/06_signals_alerts.sql      ALERTS and RISK_SCORES dynamic tables (auto-refresh ~1 min)
-sql/07_validate_signals.sql    detection rate vs answer key, top risk scores, ACC-1042 explanation
-sql/08_live_alert_demo.sql     insert suspicious transactions live and watch the alert appear
-sql/09_docs_ai_search.sql      AI_PARSE_DOCUMENT -> clause chunks, AI tagging of notes/news, 3 Cortex Search services
-sql/10_semantic_view.sql       TRACELEDGER_SV semantic view for Cortex Analyst
-sql/11_agent.sql               TRACELEDGER_COPILOT Cortex Agent (Analyst + 3 Search tools, citation guardrails)
-sql/12_app_setup.sql           cases, case history, findings (reports) and audit-log tables
-sql/13_governance.sql          roles, PII masking, region row access, PII tags, insert-only audit log
-app/streamlit_app.py           Streamlit in Snowflake app (7 pages)
+
+### Layer by layer
+
+```mermaid
+flowchart LR
+    subgraph GOV["🔐 Layer 5 · Governance wraps every layer: roles · PII masking · row access by region · PII tags · insert-only audit log · maker-checker"]
+        direction LR
+        L1["<b>Layer 1 · Data</b><br/>500 customers<br/>61,021 transactions<br/>sanctions · loans<br/>3 policy docs<br/>229 notes · 37 articles<br/><i>Stages · COPY · Git</i>"]
+        L2["<b>Layer 2 · Signals</b><br/>11 explainable rules<br/>mule rings (recursive SQL)<br/>fuzzy sanctions match<br/>explainable risk score<br/><i>Dynamic Tables</i>"]
+        L3["<b>Layer 3 · Intelligence</b><br/>Semantic View → Analyst<br/>Cortex Search ×3<br/>AI tagging of notes & news<br/>Cortex Agent copilot<br/><i>Cortex AI</i>"]
+        L4["<b>Layer 4 · App</b><br/>Command Center<br/>Customer 360 + graph<br/>Copilot · Cases<br/>STR / CTR reports<br/>What-If · Audit<br/><i>Streamlit in Snowflake</i>"]
+        L1 --> L2 --> L3 --> L4
+    end
 ```
 
-## Quick start (one click)
+### How a question is answered (Cortex Agent)
 
-1. Use a Snowflake account in a region where Cortex AI runs natively, for example **AWS US West (Oregon)**, Enterprise edition. Trial accounts can't use cross-region AI.
-2. In Snowsight, open a new SQL file, paste [`sql/bootstrap.sql`](sql/bootstrap.sql) and click **Run All**.
-3. The script links Snowflake to this GitHub repo (Git integration), copies the data and policy files into the stages, and runs every layer. It takes about 5–8 minutes.
+```mermaid
+sequenceDiagram
+    actor A as Analyst
+    participant App as Streamlit app
+    participant Ag as Cortex Agent
+    participant An as Cortex Analyst<br/>(Semantic View)
+    participant Se as Cortex Search<br/>(policy · notes · news)
+    participant Au as AUDIT_LOG
+    A->>App: "Why was ACC-1042 flagged? Does it need an STR?"
+    App->>Ag: DATA_AGENT_RUN
+    Ag->>An: alerts, reasons, evidence transactions for ACC-1042
+    An-->>Ag: SQL + result rows
+    Ag->>Se: policy §4.2 structuring, §5.2 sanctions, §8.1 STR deadline
+    Se-->>Ag: clause text with citations
+    Ag-->>App: answer citing [TXN-…] [AL-…] [TL-AML-POL-001 §4.2]
+    App->>Au: question · generated SQL · sources · user · persona
+    App-->>A: answer + "How this answer was built" (SQL, tables, sources)
+```
 
-## Layer 1 – Data foundation
+---
 
-### Dataset (as of 30-Sep-2026, 12 months of activity, INR)
+## ❄️ Snowflake technology used
 
-| Table | Rows | Notes |
+| Capability | Snowflake feature | Where |
 |---|---|---|
-| `CORE.CUSTOMERS` | 500 | KYC tier, PEP flag, declared income, PAN/phone (PII) |
-| `CORE.ACCOUNTS` | 629 | savings / current, branch, status, balance |
-| `CORE.TRANSACTIONS` | 61,021 | cash, UPI, IMPS, NEFT, RTGS, SWIFT, card |
-| `CORE.BRANCHES` | 16 | 4 regions, high-risk market areas flagged |
-| `CORE.COUNTRY_RISK` | 20 | FATF call-for-action, increased monitoring, tax havens |
-| `CORE.SANCTIONS_LIST` | 18 | synthetic OFAC/UN/EU-style names and aliases |
-| `CORE.LOANS` | 140 | DPD, SMA/NPA classification, collateral |
-| `DOCS.ANALYST_NOTES` | 229 | call, branch-visit and KYC notes |
-| `DOCS.ADVERSE_MEDIA` | 37 | fake news snippets (negative and benign) |
-| `CORE.GROUND_TRUTH` | 54 | answer key of injected patterns (evaluation only) |
+| Ingestion | Internal stages, file formats, `COPY INTO`, **Git integration** | `00`–`02`, `bootstrap.sql` |
+| Detection rules | SQL views, window functions, **recursive CTEs** (mule rings) | `04_signals_rules.sql` |
+| Fuzzy sanctions screening | `JAROWINKLER_SIMILARITY`, `EDITDISTANCE` | `05_signals_screening.sql` |
+| Real-time alerts and scores | **Dynamic Tables** (1-minute target lag) | `06_signals_alerts.sql` |
+| Unstructured → AI | `AI_CLASSIFY`, `SENTIMENT`, `AI_COMPLETE` (`AI_PARSE_DOCUMENT` on paid accounts) | `09_docs_ai_search.sql` |
+| RAG over policies, notes and news | **Cortex Search** (3 services) | `09_docs_ai_search.sql` |
+| Natural language → SQL | **Semantic View** + **Cortex Analyst** | `10_semantic_view.sql` |
+| Orchestration | **Cortex Agent** (+ Snowflake Intelligence chat) | `11_agent.sql` |
+| Application | **Streamlit in Snowflake** | `app/streamlit_app.py` |
+| Governance | Roles, **masking policies**, **row access policies**, **object tags**, grants | `13_governance.sql` |
+| Cost control | XS warehouse, 60s auto-suspend, resource monitor | `00_setup.sql` |
 
-### Injected typologies → policy clause → rule ID
+---
 
-| Typology | Policy (TL-AML-POL-001) | Rule ID | Accounts |
+## 🧭 What the analyst sees (7 pages)
+
+| Page | Highlights |
+|---|---|
+| **Command Center** | Live KPIs (alerts, high-risk customers, open cases, STRs pending/filed, value flagged), alerts by rule and typology, a 12-month trend, flagged customers with *"why this score"* |
+| **Customer 360** | Profile and explainable score, every alert with its evidence transactions and policy clause, transaction timeline, **money-flow network graph**, sanctions and counterparty screening, AI-categorised news, AI-tagged analyst notes, accounts and loans |
+| **Investigation Copilot** | Chat with the Cortex Agent. Each answer shows **the generated SQL, result tables, retrieved documents and cited IDs** |
+| **Case Management** | Alerts become a case: Open → Under review → Escalated → STR filed / Closed. Assignment, notes, full history |
+| **Report Generator** | AI-drafted **STR** and **closure memo** with the citation guardrail, **maker-checker approval**, CTR report (CSV), regulatory summary (AML + credit + liquidity) |
+| **What-If Simulator** | Re-tune the structuring rule and see the alert impact before applying it. Liquidity stress (LCR) if the top depositors withdraw |
+| **Audit Trail** | Every question, SQL statement, source, report version, approval and status change, exportable |
+
+**Personas** (sidebar "Acting as"): **Analyst** (maker, masked PII, own region) · **Compliance Head** (checker, full PII, approves) · **Auditor** (read-only, masked).
+
+---
+
+## 🎬 Demo story (3 minutes)
+
+1. **Live signal.** Three ₹9–10 lakh cash deposits and a wire to a watchlisted UAE company are inserted for a *clean* customer (`08_live_alert_demo.sql`). Within a minute the Dynamic Tables raise alerts and the score jumps **0 → 100**.
+2. **Command Center.** The new high-risk customer appears, with *"Score 100 = SCR-SAN 50 + TM-STR 35 + TM-RIO 20"*.
+3. **Customer 360.** Evidence transactions, the sanctions near-match, adverse news, and the money-flow graph showing where the cash went.
+4. **Copilot.** *"Why was ACC-1042 flagged and does it need an STR?"* The answer cites transactions and policy clauses, and shows the generated SQL.
+5. **Case → STR.** Open a case, generate the STR (the guardrail verifies every cited ID), and save the draft as the **Analyst**.
+6. **Maker-checker.** Switch to **Compliance Head** and approve. The case becomes **STR_FILED**.
+7. **Governance.** Switch to **Auditor**: names are masked (`R*** B***`), buttons are locked, and the **Audit Trail** shows everything that happened.
+
+---
+
+## 📊 Results
+
+The dataset contains **planted typologies** with an answer key (`CORE.GROUND_TRUTH`), so detection quality is measurable (`07_validate_signals.sql`):
+
+| Typology | Rule | Planted | Detected |
 |---|---|---|---|
-| Structuring (cash 9.0L–9.95L, ≥3 in 7 days) | §4.2 | TM-STR | 6 (incl. **ACC-1042**) |
-| Velocity spike (50–80 UPI txns in 3 days) | §4.3 | TM-VEL | 5 |
-| Dormant reactivation | §4.4 | TM-DOR | 5 |
-| High-risk geography / round-tripping | §4.5 | TM-GEO | 4 |
-| Income mismatch (students/homemakers) | §4.6 | TM-INC | 5 |
-| Round amounts (exact lakh multiples) | §4.7 | TM-RND | 4 |
-| Rapid in-out / pass-through | §4.8 | TM-RIO | 4 |
-| Mule rings (A→B→C→D→A) + fan-in hub | §4.9 | TM-NET | 9 + 1 hub |
-| Sanctions near-match | §5.2 | SCR-SAN | 6 |
-| PEP with contractor credits | §3.4 | SCR-PEP | 3 |
-| False-positive controls (cash-heavy jewellers) | §7.3 | n/a | 2 |
+| Structuring | TM-STR (§4.2) | 6 | **6** |
+| Velocity spike (mule) | TM-VEL (§4.3) | 5 | **5** |
+| Dormant reactivation | TM-DOR (§4.4) | 5 | **5** |
+| High-risk geography / round-tripping | TM-GEO (§4.5) | 4 | **4** |
+| Income mismatch | TM-INC (§4.6) | 5 | **5** |
+| Round amounts | TM-RND (§4.7) | 4 | **4** |
+| Pass-through | TM-RIO (§4.8) | 4 | **4** |
+| Mule rings + fan-in hub | TM-NET (§4.9) | 10 | **10** |
+| Sanctions near-match | SCR-SAN (§5.2) | 6 | **6** |
+| PEP third-party credits | SCR-PEP (§3.4) | 3 | **3** |
+| **Total** | | **52 customers** | **100% recall** |
 
-**Demo hero, ACC-1042 (Rajesh Bhandari, Mumbai Zaveri Bazaar):** nine cash deposits of ₹9.2L–9.8L in two bursts (late Aug and late Sep 2026) across four branches. Each burst is followed by an RTGS to *Red Sea Logistics FZE* (UAE), ₹85L in total. That company is on the watchlist, the customer's own name is close to a listed person, and there is adverse media about him.
+- **No clean customer reaches MEDIUM or HIGH risk.** 448 clean customers stay LOW.
+- The only alerts on clean customers are 2 **same-name adverse-media hits**: realistic false positives that demonstrate the *close-as-false-positive* workflow.
+- Tuning mattered. A naive Jaro-Winkler match flagged *"Shree Logistics"* as a sanctions hit on *"Redsea Logistics"*. Blending it with edit distance removed every false sanctions match while keeping all true ones.
 
-Regenerate the data at any time with `python data_gen/generate_data.py`. It always produces the same output.
+---
 
-### How to load it into Snowflake (Snowsight, about 10 minutes)
+## 🔐 Governance and responsible AI
 
-1. **Get the files on your laptop.** On GitHub, open this repo, switch to the working branch, then **Code → Download ZIP** and unzip it. You can also `git pull` the branch in your IDE.
-2. **Open a SQL editor.** In Snowsight, go to **Projects → Workspaces** (or **Worksheets**) and click **+** to create a SQL file.
-3. **Run `sql/00_setup.sql`.** Paste the file contents and click **Run all** (the ▶ dropdown, or Ctrl/Cmd+Shift+Enter). This creates the `TRACELEDGER_WH` warehouse, the `TRACELEDGER` database, the `CORE`/`DOCS`/`SIGNALS`/`APP` schemas and two stages.
-4. **Run `sql/01_tables.sql`** the same way.
-5. **Upload the CSVs.** Go to **Data → Databases → TRACELEDGER → CORE → Stages → DATA_STAGE**, click **+ Files** (top right), select all 10 files from `data/`, then click **Upload**.
-6. **Upload the PDFs.** Go to **TRACELEDGER → DOCS → Stages → POLICY_STAGE**, click **+ Files**, and select the 3 PDFs from `docs/policies/pdf/`.
-7. **Run `sql/02_load.sql`.** Every `COPY INTO` should show `LOADED`, and the last query should list 3 PDFs.
-8. **Run `sql/03_validate.sql`.** Row counts should match the table above, and query 2 should show the ACC-1042 deposits.
-
-Cost: an XS warehouse with `AUTO_SUSPEND = 60`. The whole of Layer 1 uses only a few cents of credits.
-
-## Layer 2 – Signal engine (explainable, no black box)
-
-Everything lives in the `TRACELEDGER.SIGNALS` schema.
-
-| Object | What it is |
+| Control | Implementation |
 |---|---|
-| `RULE_CATALOG` | Each rule's ID, name, typology, policy clause and score weight |
-| `RULE_PARAMS` / `V_PARAMS` | Every threshold as a row. Change one and the alerts recompute (the What-If simulator uses this) |
-| `RULE_TM_*`, `RULE_SCR_*`, `RULE_ADV_MED` | One view per rule. Each returns the account, time window, amount, **evidence transaction IDs**, a plain-English **reason** and a JSON detail |
-| `V_TRANSFER_CYCLES` | Recursive SQL that finds money returning to its origin through 2+ intermediaries within 7 days (mule rings) |
-| `V_NETWORK_EDGES` | Account-to-account and large external flows for the network graph |
-| `V_SCREENING_CUSTOMERS` / `V_SCREENING_COUNTERPARTIES` | Fuzzy watchlist matches (Jaro-Winkler + edit distance) |
-| `V_CTR_REPORT` | Monthly Cash Transaction Report candidates (Policy 4.1) |
-| `ALERTS` (dynamic table) | One row per rule per account, with a stable `ALERT_ID`, weight and `POLICY_REF` |
-| `RISK_SCORES` (dynamic table) | One row per customer: score 0–100, band and an explanation such as `Score 100 = SCR-SAN 50 + TM-STR 35 + TM-INC 20 + ADV-MED 10` |
-| `V_ACCOUNT_RISK` | Per-account roll-up for the risk dashboard |
+| **Least privilege** | `TL_ANALYST`, `TL_COMPLIANCE_HEAD`, `TL_AUDITOR` roles with scoped grants |
+| **PII masking** | Name `R*** B***`, PAN `XXXXXX234E`, phone `+91-XXXXXX3210`, birth year only. Full data for the Compliance Head |
+| **Row access** | Analysts see only customers in their region (WEST: 151 of 500) |
+| **Classification** | `PII_TYPE` tags on every personal-data column |
+| **Immutable audit** | `AUDIT_LOG` is insert-only for every role. Records the question, generated SQL, sources, user and persona |
+| **Maker-checker** | The persona that drafts an STR can't approve it (AML Policy §7.4) |
+| **Grounded AI** | The agent must cite IDs or say *"Insufficient evidence"*. Reports citing unknown IDs can't be saved |
+| **No tipping-off** | Reports carry the PMLA tipping-off warning, and recommendations are limited to the 4 options in Policy §8.5 |
 
-**Detection results** (from `07_validate_signals.sql`):
-- Every planted typology is caught by the rule written for it: 100% recall across 11 typologies and 52 customers.
-- No clean customer scores MEDIUM or HIGH. 448 of the 466 LOW customers are clean.
-- The only alerts on clean customers are 2 adverse-media hits on people who share a name with someone in the news. These are realistic false positives for the "close as false positive" demo.
+---
 
-**Live alert:** run `08_live_alert_demo.sql` step by step. Three sub-threshold cash deposits and a wire to a watchlisted UAE company take ACC-1038 from score 0 to 100 within a minute, with no code change.
+## 🚀 Run it yourself
 
-### How to run Layer 2
+**One click:** in a Snowflake account where Cortex AI is available (for example AWS US West, Oregon; Enterprise edition), open a SQL file in Snowsight, paste [`sql/bootstrap.sql`](sql/bootstrap.sql) and click **Run All**. In about 10 minutes it will:
+1. Connect Snowflake to this GitHub repo (Git integration).
+2. Load the data and policy documents.
+3. Build the rules, Dynamic Tables, Cortex Search services, the Semantic View and the Cortex Agent.
+4. Create the Streamlit app and apply the governance policies.
 
-The data generator was improved (more realistic spending amounts and time-ordered mule-ring hops), and the AML policy was updated to v4.3. Reload once:
+<details>
+<summary><b>Step-by-step instead</b></summary>
 
-1. In Snowsight, run this to clear the stages:
-   ```sql
-   REMOVE @TRACELEDGER.CORE.DATA_STAGE;
-   REMOVE @TRACELEDGER.DOCS.POLICY_STAGE;
-   ```
-2. Upload the 10 CSVs from `data/` to `DATA_STAGE` again, and the 3 PDFs from `docs/policies/pdf/` to `POLICY_STAGE`.
-3. **Run All** on `01_tables.sql`, then `02_load.sql`, then `03_validate.sql`. Transactions should be **61,021**.
-4. **Run All** on `04_signals_rules.sql`, `05_signals_screening.sql` and `06_signals_alerts.sql`, in that order.
-5. **Run All** on `07_validate_signals.sql` to see the results.
-6. Optional: open `08_live_alert_demo.sql` and run it **one statement at a time** to watch a live alert appear.
-
-## Layer 3 – Intelligence (Cortex AI)
-
-| Piece | Snowflake feature | Object |
+| Step | File | What it does |
 |---|---|---|
-| Load the policy text paragraph by paragraph (`AI_PARSE_DOCUMENT` on paid accounts; it's not available on trial accounts) | Stage + file format | `DOCS.POLICY_LINES` |
-| Clause-level chunks that keep doc, version, section and clause | SQL | `DOCS.POLICY_CHUNKS` |
-| Tag analyst notes (e.g. "Evasive or no source of funds") and score sentiment | `AI_CLASSIFY`, `SENTIMENT` | `DOCS.ANALYST_NOTES_ENRICHED` |
-| Categorise news (laundering, fraud, tax, corruption, sanctions, positive) | `AI_CLASSIFY`, `SENTIMENT` | `DOCS.ADVERSE_MEDIA_ENRICHED` |
-| Semantic search with citations | Cortex Search | `APP.POLICY_SEARCH`, `APP.NOTES_SEARCH`, `APP.MEDIA_SEARCH` |
-| Plain-English questions over the numbers | Semantic View + Cortex Analyst | `APP.TRACELEDGER_SV` (10 tables, 9 joins, 20 metrics, synonyms) |
-| One copilot that routes each question to the right tool | Cortex Agent | `APP.TRACELEDGER_COPILOT` |
+| 1 | `00_setup.sql` → `03_validate.sql` | Warehouse, schemas, stages, tables, load, row counts (upload `data/*.csv` and `docs/policies/*` to the stages first) |
+| 2 | `04_signals_rules.sql` → `07_validate_signals.sql` | Rules, screening, Dynamic Tables, detection results |
+| 3 | `08_live_alert_demo.sql` | Live alert demo (run step by step) |
+| 4 | `09_docs_ai_search.sql` → `11_agent.sql` | Cortex AI enrichment, Search, Semantic View, Agent |
+| 5 | `12_app_setup.sql` + `app/streamlit_app.py` | App tables, then create a Streamlit app and paste the code |
+| 6 | `13_governance.sql` | Roles, masking, row access, tags, grants |
 
-**Guardrails in the agent:**
-- Every claim must cite a transaction ID, alert ID, policy clause, note ID or article ID. If it can't, it answers "Insufficient evidence".
-- Filing recommendations are limited to the four options in policy §8.5.
-- Every answer reminds the analyst about maker-checker approval and the tipping-off prohibition.
+</details>
 
-### How to run Layer 3
+---
 
-Run each file with **Run All**, in this order:
-0. Upload the 3 `.md` files from `docs/policies/` to `DOCS → Stages → POLICY_STAGE`, next to the PDFs.
-1. `09_docs_ai_search.sql`: takes about 2–4 minutes because the AI functions run once per page, note and article. The last result is a cited answer about structuring.
-2. `10_semantic_view.sql`: the last result shows alert counts by rule, read through the semantic view.
-3. `11_agent.sql`: the last result shows which tools the agent used, and its answer about ACC-1042.
-4. Chat with it: in Snowsight, go to **AI & ML → Snowflake Intelligence** and pick **TRACELEDGER_COPILOT**.
+## 📁 Repository
 
-## Layer 4 – Streamlit in Snowflake app
+```
+app/streamlit_app.py          Streamlit in Snowflake app (7 pages, persona-aware)
+sql/bootstrap.sql             one-click setup from GitHub
+sql/00-03                     Layer 1 · setup, tables, load, validation
+sql/04-08                     Layer 2 · rules, screening, Dynamic Tables, results, live demo
+sql/09-11                     Layer 3 · Cortex AI enrichment, Search, Semantic View, Agent
+sql/12                        Layer 4 · cases, findings, audit log
+sql/13                        Layer 5 · roles, masking, row access, tags
+data/                         synthetic dataset (CSV) incl. answer key
+data_gen/                     deterministic data + policy-PDF generators
+docs/policies/                AML policy, regulatory guidance, Basel/liquidity note (MD + PDF)
+```
 
-| Page | What it does |
-|---|---|
-| **Command Center** | KPIs (alerts, high-risk customers, open cases, STRs pending/filed, value flagged), alerts by rule and typology, the flagged-customer table with the score explanation, and the latest alerts |
-| **Customer 360** | Profile, explainable score, every alert with its evidence transactions and policy clause, transaction timeline, **money-flow network graph**, sanctions and counterparty screening, adverse media with AI category, AI-tagged analyst notes, accounts and loans |
-| **Investigation Copilot** | Chat with the Cortex Agent. Each answer shows the tools used, the **generated SQL**, the result tables, the retrieved documents and the IDs cited |
-| **Case Management** | Alerts become a case, then OPEN → UNDER_REVIEW → ESCALATED → STR_FILED / CLOSED. Includes assignment, notes and history |
-| **Report Generator** | **STR draft** and **closure memo** written by Cortex AI from the case evidence and policy clauses. A **citation guardrail** blocks saving if the draft cites an ID that isn't in the evidence. Maker-checker approval, CTR report (CSV) and a regulatory summary |
-| **What-If Simulator** | Re-tune the structuring rule and see how many alerts it would raise; the Compliance Head can apply the change to production. Also an LCR-style stress test if the top depositors withdraw |
-| **Audit Trail** | Every question, SQL statement, source, report version, approval and status change, exportable as CSV |
+---
 
-The sidebar **"Acting as"** switch selects the persona: Analyst (maker), Compliance Head (checker) or Auditor (read-only). Layer 5 links it to Snowflake masking and row-access policies.
+## 📌 About the data
 
-### How to run Layer 4
-1. **Run All** on `sql/12_app_setup.sql`.
-2. In Snowsight, go to **Projects → Streamlit → + Streamlit App**. Name it `TRACELEDGER_APP`, set the location to `TRACELEDGER` / `APP` and the warehouse to `TRACELEDGER_WH`, then click **Create**.
-3. Replace the sample code with `app/streamlit_app.py` and click **Run**. If the editor has a **Packages** menu, pick the newest Streamlit version.
+All data is **synthetic** and generated deterministically by `data_gen/generate_data.py`. It's an Indian banking context (INR, RBI/PMLA/FATF-style policy) with realistic baseline behaviour and planted laundering patterns. The policy documents are written for this project and aren't legal advice. No real person or institution is represented.
 
-## Layer 5 – Governance
+<div align="center">
 
-| Control | How it works |
-|---|---|
-| **Roles** | `TL_ANALYST` (maker), `TL_COMPLIANCE_HEAD` (checker), `TL_AUDITOR` (read-only), each with least-privilege grants |
-| **PII masking** | Masking policies on name, PAN, phone, email and date of birth. Analysts and auditors see `R*** B***`, `XXXXXX234E`, `+91-XXXXXX3210` and the birth year only. The Compliance Head sees full data |
-| **Row access** | `REGION_RAP` plus the `REGION_ACCESS` mapping. An analyst sees only the customers of their region (WEST: 151 of 500) |
-| **Classification** | A `PII_TYPE` tag on every personal-data column |
-| **Immutable audit** | `AUDIT_LOG` is insert-only for every role; Snowflake's own `ACCESS_HISTORY` adds query-level lineage |
-| **Maker-checker** | An STR is drafted by the Analyst persona and approved by the Compliance Head. The same persona can't approve its own draft |
-| **AI guardrails** | The agent must cite IDs or answer "Insufficient evidence". Generated reports are blocked if they cite IDs that aren't in the evidence |
+**TraceLedger: every alert explained, every claim cited, every decision audited.**
 
-Policies check the **primary role** (`CURRENT_ROLE()`), so secondary roles in a Snowsight session can't widen access. The Streamlit app runs with its owner's rights, so it applies the same masking formats and region rule for the persona chosen in **Acting as**.
+Built by **AkhilT9**
 
-### How to run Layer 5
-1. **Run All** on `sql/13_governance.sql`. The last result shows the same query run as three roles: masked and WEST-only, masked and all regions, then full.
-2. Paste the new `app/streamlit_app.py` into the app and switch **Acting as** to see the masking change.
+</div>

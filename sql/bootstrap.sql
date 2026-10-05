@@ -2,7 +2,8 @@
 -- TraceLedger | bootstrap.sql
 -- One-click setup: connects Snowflake to the GitHub repo, copies the data and
 -- policy files from it, and runs every layer's script in order.
--- Paste into a new SQL file in Snowsight and use Run All (takes ~5-8 minutes).
+-- Paste into a new SQL file in Snowsight and use Run All (takes ~8-10 minutes).
+-- Needs a region where Cortex AI is available (e.g. AWS US West - Oregon) and Enterprise edition.
 -- =============================================================================
 
 USE ROLE ACCOUNTADMIN;
@@ -45,7 +46,17 @@ EXECUTE IMMEDIATE FROM @TRACELEDGER.PUBLIC.TRACELEDGER_REPO/branches/main/sql/09
 EXECUTE IMMEDIATE FROM @TRACELEDGER.PUBLIC.TRACELEDGER_REPO/branches/main/sql/10_semantic_view.sql;
 EXECUTE IMMEDIATE FROM @TRACELEDGER.PUBLIC.TRACELEDGER_REPO/branches/main/sql/11_agent.sql;
 
--- 5. Check: row counts, alerts and the agent
+-- 5. Layer 4 (app tables + Streamlit app) and Layer 5 (governance)
+EXECUTE IMMEDIATE FROM @TRACELEDGER.PUBLIC.TRACELEDGER_REPO/branches/main/sql/12_app_setup.sql;
+CREATE OR REPLACE STREAMLIT TRACELEDGER.APP.TRACELEDGER_APP
+  FROM @TRACELEDGER.PUBLIC.TRACELEDGER_REPO/branches/main/app/
+  MAIN_FILE = 'streamlit_app.py'
+  QUERY_WAREHOUSE = TRACELEDGER_WH
+  TITLE = 'TraceLedger';
+EXECUTE IMMEDIATE FROM @TRACELEDGER.PUBLIC.TRACELEDGER_REPO/branches/main/sql/13_governance.sql;
+USE ROLE ACCOUNTADMIN;
+
+-- 6. Check: row counts, alerts and the AI layer
 SELECT 'TRANSACTIONS' AS OBJ, COUNT(*) AS N FROM TRACELEDGER.CORE.TRANSACTIONS
 UNION ALL SELECT 'ALERTS', COUNT(*) FROM TRACELEDGER.SIGNALS.ALERTS
 UNION ALL SELECT 'HIGH-RISK CUSTOMERS', COUNT(*) FROM TRACELEDGER.SIGNALS.RISK_SCORES WHERE RISK_BAND = 'HIGH'
