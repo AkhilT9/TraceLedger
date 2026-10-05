@@ -11,6 +11,7 @@ Pages
   7. Audit Trail          every question, SQL, source, report and decision
 """
 
+import base64
 import datetime as dt
 import html
 import json
@@ -22,17 +23,35 @@ import streamlit as st
 st.set_page_config(page_title="TraceLedger", page_icon="🔎", layout="wide")
 
 
+def _demo_config():
+    """Public demo (Streamlit Community Cloud): key-pair secret created by sql/14_public_demo.sql."""
+    try:
+        return dict(st.secrets["snowflake_demo"])
+    except Exception:
+        return None
+
+
 @st.cache_resource
 def get_session():
-    """Works in both Streamlit-in-Snowflake runtimes (warehouse and container/Workspaces)."""
+    """Streamlit in Snowflake (warehouse or container runtime), or the public demo via key-pair."""
     try:
         from snowflake.snowpark.context import get_active_session
-        return get_active_session()
+        return get_active_session(), False
     except Exception:
-        return st.connection("snowflake").session()
+        pass
+    cfg = _demo_config()
+    if cfg:
+        from snowflake.snowpark import Session
+        cfg["private_key"] = base64.b64decode("".join(str(cfg.pop("private_key_b64")).split()))
+        cfg["authenticator"] = "SNOWFLAKE_JWT"
+        return Session.builder.configs(cfg).create(), True
+    return st.connection("snowflake").session(), False
 
 
-session = get_session()
+session, DEMO_MODE = get_session()
+AI_LIMIT_PER_VISIT = 8      # public demo only
+AI_LIMIT_PER_DAY = 300      # public demo only (all visitors together)
+AI_ACTIONS = ("ASK_COPILOT", "GENERATE_STR", "GENERATE_CLOSURE_MEMO", "GENERATE_REG_SUMMARY")
 
 AGENT = "TRACELEDGER.APP.TRACELEDGER_COPILOT"
 LLM = "mistral-large3"
@@ -152,13 +171,44 @@ def scalar(sql, params=None):
 
 
 def show_df(df, height=None):
-    kwargs = {"use_container_width": True}
+    kwargs = {"hide_index": True}
     if height:
         kwargs["height"] = height
     try:
-        st.dataframe(df, hide_index=True, **kwargs)
-    except TypeError:
-        st.dataframe(df, **kwargs)
+        st.dataframe(df, width="stretch", **kwargs)          # newer Streamlit
+    except Exception:
+        try:
+            st.dataframe(df, use_container_width=True, **kwargs)
+        except TypeError:                                     # very old Streamlit
+            kwargs.pop("hide_index")
+            st.dataframe(df, use_container_width=True, **kwargs)
+
+
+def full_width(render, obj):
+    """st.altair_chart / st.graphviz_chart at full width on old and new Streamlit."""
+    try:
+        render(obj, width="stretch")
+    except Exception:
+        render(obj, use_container_width=True)
+
+
+def ai_allowed():
+    """The public demo limits AI requests per visit and per day; inside Snowflake there is no limit."""
+    if not DEMO_MODE:
+        return True, ""
+    if st.session_state.get("ai_calls", 0) >= AI_LIMIT_PER_VISIT:
+        return False, f"Public demo limit reached ({AI_LIMIT_PER_VISIT} AI requests per visit). Refresh the page to start a new visit."
+    used = scalar(
+        f"SELECT COUNT(*) FROM TRACELEDGER.APP.AUDIT_LOG WHERE USER_NAME = CURRENT_USER() "
+        f"AND EVENT_TS > DATEADD(day, -1, CURRENT_TIMESTAMP()::TIMESTAMP_NTZ) AND ACTION IN ({placeholders(AI_ACTIONS)})",
+        AI_ACTIONS)
+    if int(used) >= AI_LIMIT_PER_DAY:
+        return False, "The public demo's daily AI budget is used up. Everything else still works; please try the AI again tomorrow."
+    return True, ""
+
+
+def count_ai_call():
+    st.session_state["ai_calls"] = st.session_state.get("ai_calls", 0) + 1
 
 
 def inr(x):
@@ -313,14 +363,13 @@ def page_command_center():
             SELECT RULE_ID || ' · ' || RULE_NAME AS RULE, TYPOLOGY, COUNT(*) AS ALERTS, ANY_VALUE(POLICY_REF) AS POLICY
             FROM TRACELEDGER.SIGNALS.ALERTS GROUP BY 1, 2 ORDER BY 3 DESC
         """)
-        st.altair_chart(
+        full_width(st.altair_chart,
             alt.Chart(by_rule).mark_bar().encode(
                 x=alt.X("ALERTS:Q", title="Alerts"),
                 y=alt.Y("RULE:N", sort="-x", title=None),
                 color=alt.Color("TYPOLOGY:N", legend=alt.Legend(orient="bottom")),
                 tooltip=["RULE", "TYPOLOGY", "ALERTS", "POLICY"],
             ).properties(height=320),
-            use_container_width=True,
         )
     with right:
         st.subheader("Alert trend by typology")
@@ -330,14 +379,13 @@ def page_command_center():
             WHERE ALERT_DATE > (SELECT DATEADD(month, -12, MAX(TXN_TS))::DATE FROM TRACELEDGER.CORE.TRANSACTIONS)
             GROUP BY 1, 2 ORDER BY 1
         """)
-        st.altair_chart(
+        full_width(st.altair_chart,
             alt.Chart(trend).mark_bar().encode(
                 x=alt.X("yearmonth(MONTH):T", title=None),
                 y=alt.Y("ALERTS:Q", title="Alerts"),
                 color=alt.Color("TYPOLOGY:N", legend=None),
                 tooltip=["MONTH", "TYPOLOGY", "ALERTS"],
             ).properties(height=320),
-            use_container_width=True,
         )
 
     st.subheader("Flagged customers (explainable score)")
@@ -487,14 +535,13 @@ def page_customer_360():
             WHERE a.CUSTOMER_ID = ? GROUP BY 1, 2 ORDER BY 1
         """, (cid,))
         if not tx.empty:
-            st.altair_chart(
+            full_width(st.altair_chart,
                 alt.Chart(tx).mark_bar().encode(
                     x=alt.X("DAY:T", title=None), y=alt.Y("AMOUNT:Q", title="INR per day"),
                     color=alt.Color("DIRECTION:N", scale=alt.Scale(domain=["CREDIT", "DEBIT"],
                                                                    range=["#4c78a8", "#e45756"])),
                     tooltip=["DAY", "DIRECTION", alt.Tooltip("AMOUNT:Q", format=",.0f")],
                 ).properties(height=260),
-                use_container_width=True,
             )
         recent = q("""
             SELECT t.TXN_ID, t.ACCOUNT_ID, t.TXN_TS, t.DIRECTION, t.AMOUNT, t.CHANNEL, t.COUNTERPARTY_NAME,
@@ -511,7 +558,7 @@ def page_customer_360():
         if dot:
             st.caption("Money flows between accounts (internal transfers) and large external wires. "
                        "Colour = account risk score; bold border = this customer.")
-            st.graphviz_chart(dot, use_container_width=True)
+            full_width(st.graphviz_chart, dot)
         else:
             st.info("No internal transfers or large external wires for this customer.")
 
@@ -653,6 +700,11 @@ def page_copilot():
     if not question and st.session_state.get("prefill"):
         question = st.session_state.pop("prefill")
     if question:
+        ok, why = ai_allowed()
+        if not ok:
+            st.warning(why)
+            return
+        count_ai_call()
         chat.append({"role": "user", "text": question})
         with st.chat_message("user"):
             st.markdown(question)
@@ -941,6 +993,11 @@ def page_reports():
             ok = not read_only() and (kind == "STR" or len(rationale.strip()) >= 30)
             if st.button(f"Generate {'STR draft' if kind == 'STR' else 'closure memo'} with Cortex AI", disabled=not ok,
                          key=f"gen_{kind}"):
+                allowed, why = ai_allowed()
+                if not allowed:
+                    st.warning(why)
+                    st.stop()
+                count_ai_call()
                 with st.spinner("Collecting evidence, policy clauses, notes and media; drafting…"):
                     st.session_state[f"draft_{kind}"] = (case_id, generate_report(case_id, kind, rationale))
                 audit("Report Generator", f"GENERATE_{kind}", object_id=case_id)
@@ -1055,6 +1112,11 @@ def page_reports():
             st.markdown("**Credit risk: exposure by asset class (TL-RSK-NOTE-003)**")
             show_df(credit)
         if st.button("Write the narrative with Cortex AI", disabled=read_only()):
+            allowed, why = ai_allowed()
+            if not allowed:
+                st.warning(why)
+                st.stop()
+            count_ai_call()
             prompt = ("Write a one-page regulatory summary for the Board Risk Committee of TraceLedger Bank, in four "
                       "short sections: AML activity, reporting (STR/CTR), credit risk (NPA and exposure to AML-flagged "
                       "borrowers), and key actions. Use only these figures (INR):\n"
@@ -1108,7 +1170,9 @@ def page_what_if():
     st.caption("Every extra alert costs analyst time (about 30-45 minutes of L1 review each); too few alerts "
                "risks missing structuring. Compare before changing the policy threshold.")
     show_df(sim, height=280)
-    if persona() == "COMPLIANCE_HEAD":
+    if DEMO_MODE:
+        st.caption("In the public demo, rule thresholds can be simulated but not changed.")
+    elif persona() == "COMPLIANCE_HEAD":
         if st.button("Apply these thresholds to production rules"):
             for name, val in (("STR_MIN_AMOUNT", min_amt * 1e5), ("STR_MIN_COUNT", min_cnt), ("STR_WINDOW_DAYS", days)):
                 run("UPDATE TRACELEDGER.SIGNALS.RULE_PARAMS SET PARAM_VALUE = ? WHERE PARAM_NAME = ?", (val, name))
@@ -1179,6 +1243,11 @@ def page_audit():
 # -----------------------------------------------------------------------------
 # Router
 # -----------------------------------------------------------------------------
+if DEMO_MODE:
+    st.info("🌐 **Public demo**: this page runs live on Snowflake (Dynamic Tables, Cortex Agent, Cortex Analyst, "
+            "Cortex Search, Cortex AI). All data is synthetic. Use **Acting as** in the sidebar to switch persona; "
+            f"AI requests are limited to {AI_LIMIT_PER_VISIT} per visit.")
+
 {
     "Command Center": page_command_center,
     "Customer 360": page_customer_360,

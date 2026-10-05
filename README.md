@@ -225,6 +225,14 @@ The dataset contains **planted typologies** with an answer key (`CORE.GROUND_TRU
 
 ---
 
+## 🌐 Public demo hosting
+
+Inside Snowflake the app runs as **Streamlit in Snowflake**. For judges without a Snowflake login, the same `app/streamlit_app.py` also runs on **Streamlit Community Cloud**, connected live to Snowflake:
+
+- **Connection:** a dedicated `SERVICE` user with key-pair authentication (no password) and its own role, `TL_DEMO`. The key is generated inside Snowflake by `sql/14_public_demo.sql`.
+- **Where the work happens:** all data, Dynamic Tables, the Cortex Agent, Cortex Search and Cortex AI still run in Snowflake. Only the web page is hosted outside.
+- **Guardrails:** AI requests are capped per visit and per day, visitors can't change rule thresholds, and the warehouse is capped by a resource monitor.
+
 ## 🚀 Run it yourself
 
 **One click:** in a Snowflake account where Cortex AI is available (for example AWS US West, Oregon; Enterprise edition), open a SQL file in Snowsight, paste [`sql/bootstrap.sql`](sql/bootstrap.sql) and click **Run All**. In about 10 minutes it will:
@@ -259,6 +267,8 @@ sql/04-08                     Layer 2 · rules, screening, Dynamic Tables, resul
 sql/09-11                     Layer 3 · Cortex AI enrichment, Search, Semantic View, Agent
 sql/12                        Layer 4 · cases, findings, audit log
 sql/13                        Layer 5 · roles, masking, row access, tags
+sql/14_public_demo.sql        public demo login (service user + key pair) for Streamlit Community Cloud
+app/requirements.txt          packages for the public demo host
 data/                         synthetic dataset (CSV) incl. answer key
 data_gen/                     deterministic data + policy-PDF generators
 docs/policies/                AML policy, regulatory guidance, Basel/liquidity note (MD + PDF)
