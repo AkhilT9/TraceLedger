@@ -240,7 +240,9 @@ def page_command_center():
         st.subheader("Alert trend by typology")
         trend = q("""
             SELECT DATE_TRUNC('month', ALERT_DATE)::DATE AS MONTH, TYPOLOGY, COUNT(*) AS ALERTS
-            FROM TRACELEDGER.SIGNALS.ALERTS GROUP BY 1, 2 ORDER BY 1
+            FROM TRACELEDGER.SIGNALS.ALERTS
+            WHERE ALERT_DATE > (SELECT DATEADD(month, -12, MAX(TXN_TS))::DATE FROM TRACELEDGER.CORE.TRANSACTIONS)
+            GROUP BY 1, 2 ORDER BY 1
         """)
         st.altair_chart(
             alt.Chart(trend).mark_bar().encode(
