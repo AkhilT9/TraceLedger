@@ -19,10 +19,20 @@ import re
 import altair as alt
 import pandas as pd
 import streamlit as st
-from snowflake.snowpark.context import get_active_session
-
 st.set_page_config(page_title="TraceLedger", page_icon="🔎", layout="wide")
-session = get_active_session()
+
+
+@st.cache_resource
+def get_session():
+    """Works in both Streamlit-in-Snowflake runtimes (warehouse and container/Workspaces)."""
+    try:
+        from snowflake.snowpark.context import get_active_session
+        return get_active_session()
+    except Exception:
+        return st.connection("snowflake").session()
+
+
+session = get_session()
 
 AGENT = "TRACELEDGER.APP.TRACELEDGER_COPILOT"
 LLM = "mistral-large3"
