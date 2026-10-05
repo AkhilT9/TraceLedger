@@ -62,8 +62,84 @@ def rerun():
 
 
 @st.cache_data(ttl=120, show_spinner=False)
-def q(sql, params=None):
+def _q(sql, params=None):
     return session.sql(sql, params=list(params) if params else None).to_pandas()
+
+
+def q(sql, params=None):
+    """Query + persona-based PII masking (mirrors the GOVERNANCE masking policies)."""
+    df = _q(sql, params)
+    return mask_df(df) if masked() else df
+
+
+# -----------------------------------------------------------------------------
+# Governance in the app layer. The app runs with its owner's rights, so the
+# Snowflake masking / row-access policies (sql/13_governance.sql) are mirrored
+# here for the selected persona: same masking formats, same region rule.
+# -----------------------------------------------------------------------------
+MASKED_PERSONAS = {"ANALYST", "AUDITOR"}
+REGIONS = ["NORTH", "SOUTH", "EAST", "WEST"]
+
+
+def mask_name(v):
+    return re.sub(r"([A-Za-z])[A-Za-z]*", r"\1***", v)
+
+
+def mask_dob(v):
+    try:
+        return dt.date(v.year, 1, 1)
+    except AttributeError:
+        return v
+
+
+PII_MASKERS = {
+    "FULL_NAME": mask_name,
+    "NAME": mask_name,
+    "PAN_NUMBER": lambda v: "XXXXXX" + v[-4:],
+    "PHONE": lambda v: v[:4] + "XXXXXX" + v[-4:],
+    "EMAIL": lambda v: v[:1] + "***@" + v.split("@")[-1],
+    "DATE_OF_BIRTH": mask_dob,
+    "CUSTOMER_DOB": mask_dob,
+}
+FREE_TEXT_COLUMNS = {"REASON", "HEADLINE", "COUNTERPARTY_NAME", "SCREENED_NAME", "NOTE_TEXT", "NOTE", "MENTIONED_NAME",
+                     "TITLE", "CONTENT", "QUESTION"}
+
+
+@st.cache_resource(show_spinner=False)
+def name_pattern():
+    names = [r[0] for r in session.sql("SELECT DISTINCT FULL_NAME FROM TRACELEDGER.CORE.CUSTOMERS").collect() if r[0]]
+    names.sort(key=len, reverse=True)
+    return re.compile("|".join(re.escape(n) for n in names)) if names else None
+
+
+def mask_text(text):
+    """Replace any customer name inside free text (alert reasons, headlines, copilot answers)."""
+    pat = name_pattern()
+    if not masked() or not isinstance(text, str) or pat is None:
+        return text
+    return pat.sub(lambda m: mask_name(m.group(0)), text)
+
+
+def mask_df(df):
+    df = df.copy()
+    for col in df.columns:
+        if col in PII_MASKERS:
+            fn = PII_MASKERS[col]
+            df[col] = df[col].map(lambda v, fn=fn: fn(v) if v is not None and v == v else v)
+        elif col in FREE_TEXT_COLUMNS:
+            df[col] = df[col].map(mask_text)
+    return df
+
+
+def masked():
+    return persona() in MASKED_PERSONAS
+
+
+def allowed_regions():
+    """Row access: an analyst sees only the assigned region (GOVERNANCE.REGION_ACCESS)."""
+    if persona() == "ANALYST":
+        return [st.session_state.get("analyst_region", "WEST")]
+    return REGIONS
 
 
 def run(sql, params=None):
@@ -140,10 +216,12 @@ def llm(prompt):
 
 
 def customer_options():
+    regions = allowed_regions()
     return q(
         "SELECT r.CUSTOMER_ID, c.FULL_NAME, r.PRIMARY_ACCOUNT_ID, r.RISK_SCORE, r.RISK_BAND "
         "FROM TRACELEDGER.SIGNALS.RISK_SCORES r JOIN TRACELEDGER.CORE.CUSTOMERS c ON c.CUSTOMER_ID = r.CUSTOMER_ID "
-        "ORDER BY r.RAW_SCORE DESC, r.CUSTOMER_ID"
+        f"WHERE c.REGION IN ({placeholders(regions)}) ORDER BY r.RAW_SCORE DESC, r.CUSTOMER_ID",
+        tuple(regions),
     )
 
 
@@ -180,7 +258,15 @@ with st.sidebar:
     st.markdown("## 🔎 TraceLedger")
     st.caption("AML & Fraud Investigation Copilot")
     st.selectbox("Acting as", list(PERSONAS), format_func=PERSONAS.get, key="persona")
+    if persona() == "ANALYST":
+        st.selectbox("Assigned region", REGIONS, index=REGIONS.index("WEST"), key="analyst_region")
     st.caption(f"User **{current_user()}**")
+    if persona() == "ANALYST":
+        st.caption(f"🔒 PII masked · region **{allowed_regions()[0]}** only (row access)")
+    elif persona() == "AUDITOR":
+        st.caption("🔒 PII masked · all regions · read-only")
+    else:
+        st.caption("🔓 Full PII · all regions · can approve")
     if "nav_target" in st.session_state:
         st.session_state["page"] = st.session_state.pop("nav_target")
     if "page" not in st.session_state:
@@ -255,7 +341,7 @@ def page_command_center():
         )
 
     st.subheader("Flagged customers (explainable score)")
-    regions = st.multiselect("Region", ["NORTH", "SOUTH", "EAST", "WEST"], default=["NORTH", "SOUTH", "EAST", "WEST"])
+    regions = st.multiselect("Region", allowed_regions(), default=allowed_regions())
     if regions:
         top = q(f"""
             SELECT r.CUSTOMER_ID, c.FULL_NAME AS NAME, r.PRIMARY_ACCOUNT_ID AS ACCOUNT, r.REGION, r.RISK_SCORE AS SCORE,
@@ -273,10 +359,11 @@ def page_command_center():
             go("Customer 360", focus_customer=pick)
 
     st.subheader("Latest alerts")
-    feed = q("""
+    feed = q(f"""
         SELECT ALERT_ID, ALERT_DATE, ACCOUNT_ID, RULE_NAME, WEIGHT, POLICY_REF, REASON
-        FROM TRACELEDGER.SIGNALS.ALERTS ORDER BY WINDOW_END DESC LIMIT 10
-    """)
+        FROM TRACELEDGER.SIGNALS.ALERTS WHERE REGION IN ({placeholders(allowed_regions())})
+        ORDER BY WINDOW_END DESC LIMIT 10
+    """, tuple(allowed_regions()))
     show_df(feed)
 
 
@@ -336,8 +423,12 @@ def page_customer_360():
     with c2:
         acc = st.text_input("…or jump to account", placeholder="ACC-1042")
         if acc:
-            hit = q("SELECT CUSTOMER_ID FROM TRACELEDGER.CORE.ACCOUNTS WHERE ACCOUNT_ID = ?", (acc.strip().upper(),))
-            if not hit.empty and hit.CUSTOMER_ID[0] != cid:
+            hit = q("SELECT a.CUSTOMER_ID, c.REGION FROM TRACELEDGER.CORE.ACCOUNTS a "
+                    "JOIN TRACELEDGER.CORE.CUSTOMERS c ON c.CUSTOMER_ID = a.CUSTOMER_ID WHERE a.ACCOUNT_ID = ?",
+                    (acc.strip().upper(),))
+            if not hit.empty and hit.REGION[0] not in allowed_regions():
+                st.caption("🔒 Outside your region (row access policy)")
+            elif not hit.empty and hit.CUSTOMER_ID[0] != cid:
                 go("Customer 360", focus_customer=hit.CUSTOMER_ID[0])
             elif hit.empty:
                 st.caption("Account not found")
@@ -572,6 +663,10 @@ def page_copilot():
                 except Exception as e:
                     d = {"answer": f"The copilot call failed: {e}", "steps": [], "tools": [], "sqls": [],
                          "tables": [], "sources": [], "cited": []}
+            d["answer"] = mask_text(d["answer"])
+            d["steps"] = [mask_text(x) for x in d["steps"]]
+            d["tables"] = [mask_df(t) if masked() else t for t in d["tables"]]
+            d["sources"] = [{k: mask_text(v) for k, v in src.items()} for src in d["sources"]]
             st.markdown(d["answer"])
             render_details(d)
         chat.append({"role": "assistant", "text": d["answer"], "details": d})
@@ -644,12 +739,13 @@ def page_cases():
             st.success(f"{case_id} created.")
             rerun()
 
-    cases = q("""
+    cases = q(f"""
         SELECT c.CASE_ID, c.STATUS, c.PRIORITY, c.CUSTOMER_ID, cu.FULL_NAME AS NAME, c.PRIMARY_ACCOUNT_ID AS ACCOUNT,
                c.RISK_SCORE_AT_OPEN AS SCORE, c.ASSIGNED_TO, c.DUE_DATE, c.UPDATED_AT
         FROM TRACELEDGER.APP.CASES c JOIN TRACELEDGER.CORE.CUSTOMERS cu ON cu.CUSTOMER_ID = c.CUSTOMER_ID
+        WHERE cu.REGION IN ({placeholders(allowed_regions())})
         ORDER BY c.UPDATED_AT DESC
-    """)
+    """, tuple(allowed_regions()))
     st.subheader("Cases")
     if cases.empty:
         st.info("No cases yet. Open one above, or from Customer 360.")

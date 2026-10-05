@@ -15,9 +15,9 @@ A compliance analyst asks *"Why was ACC-1042 flagged, and does it need an STR?"*
 | 1. Data foundation (synthetic data, policy docs, tables, load) | ✅ done |
 | 2. Signal engine (rules, sanctions fuzzy match, network, risk score) | ✅ done |
 | 3. Intelligence (semantic view, Cortex Search, Agent) | ✅ done |
-| 4. Streamlit app | ✅ built |
-| 5. Governance (roles, masking, row access, audit) | ⏳ next |
-| 6. Polish (eval set, demo) | ⏳ |
+| 4. Streamlit app | ✅ done (deployed) |
+| 5. Governance (roles, masking, row access, audit) | ✅ built |
+| 6. Polish (eval set, demo) | ⏳ next |
 
 ## Repository layout
 
@@ -41,6 +41,7 @@ sql/09_docs_ai_search.sql      AI_PARSE_DOCUMENT -> clause chunks, AI tagging of
 sql/10_semantic_view.sql       TRACELEDGER_SV semantic view for Cortex Analyst
 sql/11_agent.sql               TRACELEDGER_COPILOT Cortex Agent (Analyst + 3 Search tools, citation guardrails)
 sql/12_app_setup.sql           cases, case history, findings (reports) and audit-log tables
+sql/13_governance.sql          roles, PII masking, region row access, PII tags, insert-only audit log
 app/streamlit_app.py           Streamlit in Snowflake app (7 pages)
 ```
 
@@ -183,3 +184,21 @@ The sidebar **"Acting as"** switch selects the persona: Analyst (maker), Complia
 1. **Run All** on `sql/12_app_setup.sql`.
 2. In Snowsight, go to **Projects → Streamlit → + Streamlit App**. Name it `TRACELEDGER_APP`, set the location to `TRACELEDGER` / `APP` and the warehouse to `TRACELEDGER_WH`, then click **Create**.
 3. Replace the sample code with `app/streamlit_app.py` and click **Run**. If the editor has a **Packages** menu, pick the newest Streamlit version.
+
+## Layer 5 – Governance
+
+| Control | How it works |
+|---|---|
+| **Roles** | `TL_ANALYST` (maker), `TL_COMPLIANCE_HEAD` (checker), `TL_AUDITOR` (read-only), each with least-privilege grants |
+| **PII masking** | Masking policies on name, PAN, phone, email and date of birth. Analysts and auditors see `R*** B***`, `XXXXXX234E`, `+91-XXXXXX3210` and the birth year only. The Compliance Head sees full data |
+| **Row access** | `REGION_RAP` plus the `REGION_ACCESS` mapping. An analyst sees only the customers of their region (WEST: 151 of 500) |
+| **Classification** | A `PII_TYPE` tag on every personal-data column |
+| **Immutable audit** | `AUDIT_LOG` is insert-only for every role; Snowflake's own `ACCESS_HISTORY` adds query-level lineage |
+| **Maker-checker** | An STR is drafted by the Analyst persona and approved by the Compliance Head. The same persona can't approve its own draft |
+| **AI guardrails** | The agent must cite IDs or answer "Insufficient evidence". Generated reports are blocked if they cite IDs that aren't in the evidence |
+
+Policies check the **primary role** (`CURRENT_ROLE()`), so secondary roles in a Snowsight session can't widen access. The Streamlit app runs with its owner's rights, so it applies the same masking formats and region rule for the persona chosen in **Acting as**.
+
+### How to run Layer 5
+1. **Run All** on `sql/13_governance.sql`. The last result shows the same query run as three roles: masked and WEST-only, masked and all regions, then full.
+2. Paste the new `app/streamlit_app.py` into the app and switch **Acting as** to see the masking change.
